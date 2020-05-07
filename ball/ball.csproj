@@ -47,6 +47,7 @@
     <Compile Include="Gameplay\Level_01\Level.cs" />
     <Compile Include="Gameplay\Stage.cs" />
     <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Menu\Credits.cs" />
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

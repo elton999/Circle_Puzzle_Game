@@ -12,9 +12,6 @@ namespace ball
         SpriteBatch spriteBatch;
 
         private BasicEffect _spriteBatchEffect;
-        // Simple camera controls
-        private Vector3 _cameraPosition = new Vector3(0, 1.70f, 0); // camera is 1.7 meters above the ground
-        float cameraViewWidth = 12.5f; // camera is 12.5 meters wide.
 
         public Game1()
         {
@@ -59,10 +56,6 @@ namespace ball
 
         protected override void Draw(GameTime gameTime)
         {
-
-            var vp = GraphicsDevice.Viewport;
-            _spriteBatchEffect.View = Matrix.CreateLookAt(_cameraPosition, _cameraPosition + Vector3.Forward, Vector3.Up);
-            _spriteBatchEffect.Projection = Matrix.CreateOrthographic(cameraViewWidth, cameraViewWidth / vp.AspectRatio, 0f, -1f);
 
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             this.ScreemController.BeginDraw(GraphicsDevice, spriteBatch);

@@ -8,8 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
-using tainicom.Aether.Physics2D.Dynamics;
 using UmbrellaToolKit.UI;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace ball.Gameplay.Level_01
 {
@@ -19,6 +19,11 @@ namespace ball.Gameplay.Level_01
         
         public Level(ContentManager Content, World World, MouseManager mouse)
         {
+            this.ResetLevel(Content, World, mouse);
+        }
+
+        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
+        {
             this.Mouse = mouse;
             this.WhiteCircle = new Circle();
             this.WhiteCircle._Mouse = this.Mouse;
@@ -27,12 +32,17 @@ namespace ball.Gameplay.Level_01
 
             this.SetBackgroundColor = Color.Black;
             this.LevelReady = true;
+            this.Finished = false;
         }
+
+        private float _MaxSize = 6f;
 
         public override void UpdateLevel(GameTime gameTime)
         {
             this.WhiteCircle.CBody.Position = this.Screem.getCenterScreem;
             this.WhiteUI = this.WhiteCircle.WhiteUI;
+
+            if (this.WhiteCircle.Scale > this._MaxSize) this.Finished = true;
 
             this.Update(gameTime);
         }
