@@ -53,7 +53,7 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content)
         {
-            CurrentlyLevel = 0;
+            CurrentlyLevel = 1;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
@@ -77,7 +77,7 @@ namespace ball.Managers
         public void SetCreditsScene()
         {
             // set Credits Game Object
-            this._IntialCredits = true;
+            this._IntialCredits = false;
             this.Credits = new Credits();
             this.Credits.FontBold = this.FontBold;
             this.Credits.FontRegular = this.FontRegular;
@@ -93,6 +93,7 @@ namespace ball.Managers
         public void SetAllLevels(ContentManager Content)
         {
             this.Levels.Add(new Gameplay.Level_01.Level(Content, this.World, this.Mouse));
+            this.Levels.Add(new Gameplay.Level_02.Level(Content, this.World, this.Mouse));
         }
 
         public void Update(GameTime gameTime)
