@@ -53,13 +53,13 @@ namespace ball.Menu
             {
                 this.Transparent += 0.01f;
                 _time = 0;
-            } else if (this.AddicionalCreditsTransparence < 1f && _time % 0.2f >= 0.032f)
+            } else if (this.AddicionalCreditsTransparence < 1f &&  _time % 0.2f >= 0.032f)
             {
                 this.AddicionalCreditsTransparence += 0.01f;
                 _time = 0;
             } else if (this.AddicionalCreditsTransparence >= 1f && this.Transparent >= 1f)
             {
-                if (_time % 0.2f >= (0.032f) * 30 * 2)
+                if (_time % 0.2f >= (0.032f))
                 {
                     this.Finished = true;
                 }

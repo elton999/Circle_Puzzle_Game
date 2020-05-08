@@ -53,7 +53,7 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content)
         {
-            CurrentlyLevel = 1;
+            CurrentlyLevel = 0;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
@@ -112,6 +112,13 @@ namespace ball.Managers
                         //change Color Mouse
                         if (this.SceneLevel.WhiteUI) this.Mouse.Sprite = this.MouseWhite;
                         else this.Mouse.Sprite = this.MouseBlack;
+
+                        if (this.SceneLevel.Finished && this.CurrentlyLevel == 0) this._IntialCredits = true;
+                        else if (this.SceneLevel.Finished && this.CurrentlyLevel < this.Levels.Count() - 1)
+                        {
+                            this.CurrentlyLevel++;
+                            this.SceneLevel = this.Levels[this.CurrentlyLevel];
+                        }
                         break;
                 }
             }
@@ -120,6 +127,12 @@ namespace ball.Managers
                 this.Mouse.Show = false;
                 this.Credits.Screem = this.Screem;
                 this.CreditsScene.Update(gameTime);
+                if (this.Credits.Finished)
+                {
+                    this._IntialCredits = false;
+                    this.CurrentlyLevel++;
+                    this.SceneLevel = this.Levels[this.CurrentlyLevel];
+                }
             }
             this.Mouse.Update(gameTime);
 
