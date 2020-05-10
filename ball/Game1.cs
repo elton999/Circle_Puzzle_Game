@@ -56,7 +56,6 @@ namespace ball
 
         protected override void Draw(GameTime gameTime)
         {
-
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             this.ScreemController.BeginDraw(GraphicsDevice, spriteBatch);
             this.GameManager.Draw(spriteBatch, GraphicsDevice);

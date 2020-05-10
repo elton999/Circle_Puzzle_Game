@@ -46,6 +46,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Gameplay\Level_01\Level.cs" />
     <Compile Include="Gameplay\Level_02\Level.cs" />
+    <Compile Include="Gameplay\Level_03\Level.cs" />
     <Compile Include="Gameplay\Stage.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Menu\Credits.cs" />
@@ -117,7 +118,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />
-    <None Include="Content\DiagnosticsFont.xnb" />
+    <None Include="Content\DiagnosticsFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +130,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\Level_03\" />
     <Folder Include="Gameplay\Level_04\" />
     <Folder Include="Gameplay\Level_05\" />
   </ItemGroup>

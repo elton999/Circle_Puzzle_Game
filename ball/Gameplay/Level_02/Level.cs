@@ -20,8 +20,9 @@ namespace ball.Gameplay.Level_02
 
         List<CirclePart> CirclePart = new List<CirclePart>();
 
-        public Level(ContentManager Content, World World, MouseManager mouse)
+        public override void Start (ContentManager Content, World World, MouseManager mouse)
         {
+            this.World = World;
             this.Mouse = mouse;
             for (int i = 0; i < 4; i++)
             {
@@ -38,11 +39,24 @@ namespace ball.Gameplay.Level_02
             this.ResetLevel(Content, World, mouse);
             this.LevelReady = true;
             this.WhiteUI = false;
+            Console.WriteLine(LevelReady);
+        }
+
+        public override void Destroy()
+        {
+            for (int i = 0; i < this.Players.Count(); i++)
+            {
+                this.World.Remove(this.Players[i].CBody);
+            }
+            this.CirclePart = new List<CirclePart>();
+            this.Players = new List<GameObject>();
+            this.Finished = false;
+            this.LevelReady = false;
         }
 
         public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
         {
-
+            this.Finished = false;
         }
 
 

@@ -17,8 +17,9 @@ namespace ball.Gameplay.Level_01
     {
         public Circle WhiteCircle;
         
-        public Level(ContentManager Content, World World, MouseManager mouse)
+        public override void Start (ContentManager Content, World World, MouseManager mouse)
         {
+            this.World = World;
             this.ResetLevel(Content, World, mouse);
         }
 
@@ -33,6 +34,17 @@ namespace ball.Gameplay.Level_01
             this.SetBackgroundColor = Color.Black;
             this.LevelReady = true;
             this.Finished = false;
+        }
+
+        public override void Destroy()
+        {
+            for (int i = 0; i < this.Players.Count(); i++)
+            {
+                this.World.Remove(this.Players[i].CBody);
+            }
+            this.Players = new List<GameObject>();
+            this.WhiteCircle = null;
+            this.LevelReady = false;
         }
 
         private float _MaxSize = 6f;

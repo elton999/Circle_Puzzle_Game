@@ -59,7 +59,7 @@ namespace ball.Menu
                 _time = 0;
             } else if (this.AddicionalCreditsTransparence >= 1f && this.Transparent >= 1f)
             {
-                if (_time % 0.2f >= (0.032f))
+                if (_time % 60f >= 0.032f)
                 {
                     this.Finished = true;
                 }

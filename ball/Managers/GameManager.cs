@@ -50,16 +50,18 @@ namespace ball.Managers
 
         public SpriteFont FontBold;
         public SpriteFont FontRegular;
+        
+        ContentManager Content;
 
         public GameManager(ContentManager Content)
         {
             CurrentlyLevel = 0;
+            this.Content = Content;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
 
             this.World = new World();
-            this.World.Gravity = new Vector2(0, 20);
 
             this.Mouse = new MouseManager();
             this.MouseWhite = Content.Load<Texture2D>("Sprites/UI/upLeft_white");
@@ -69,7 +71,6 @@ namespace ball.Managers
             this.Mouse.Show = true;
 
             this.SetAllLevels(Content);
-            this.SceneLevel = this.Levels[this.CurrentlyLevel];
 
             this.SetCreditsScene();
         }
@@ -92,14 +93,23 @@ namespace ball.Managers
 
         public void SetAllLevels(ContentManager Content)
         {
-            this.Levels.Add(new Gameplay.Level_01.Level(Content, this.World, this.Mouse));
-            this.Levels.Add(new Gameplay.Level_02.Level(Content, this.World, this.Mouse));
+            this.Levels.Add(new Gameplay.Level_01.Level());
+            this.Levels.Add(new Gameplay.Level_02.Level());
+            this.Levels.Add(new Gameplay.Level_03.Level());
+        }
+
+        public void StartLevel()
+        {
+            this.SceneLevel = this.Levels[this.CurrentlyLevel];
+            this.SceneLevel.Start(Content, World, Mouse);
+            this.SceneLevel.Screem = this.Screem;
         }
 
         public void Update(GameTime gameTime)
         {
-            float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.World.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
+            this.World.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, (1f / 30f)));
+
+            if (this.Levels[this.CurrentlyLevel].LevelReady == false) this.StartLevel();
 
             if (!this._IntialCredits)
             {
@@ -107,7 +117,6 @@ namespace ball.Managers
                 switch (this.CurrentlyStatus)
                 {
                     case GameStatus.PLAY:
-                        this.SceneLevel.Screem = this.Screem;
                         this.SceneLevel.UpdateLevel(gameTime);
                         //change Color Mouse
                         if (this.SceneLevel.WhiteUI) this.Mouse.Sprite = this.MouseWhite;
@@ -116,8 +125,9 @@ namespace ball.Managers
                         if (this.SceneLevel.Finished && this.CurrentlyLevel == 0) this._IntialCredits = true;
                         else if (this.SceneLevel.Finished && this.CurrentlyLevel < this.Levels.Count() - 1)
                         {
+                            this.Levels[this.CurrentlyLevel].Destroy();
                             this.CurrentlyLevel++;
-                            this.SceneLevel = this.Levels[this.CurrentlyLevel];
+                            this.StartLevel();
                         }
                         break;
                 }
@@ -130,8 +140,10 @@ namespace ball.Managers
                 if (this.Credits.Finished)
                 {
                     this._IntialCredits = false;
+                    this.SceneLevel.Destroy();
                     this.CurrentlyLevel++;
                     this.SceneLevel = this.Levels[this.CurrentlyLevel];
+                    this.StartLevel();
                 }
             }
             this.Mouse.Update(gameTime);
@@ -140,6 +152,7 @@ namespace ball.Managers
 
         public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
+
             //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             if (!this._IntialCredits)
             {
