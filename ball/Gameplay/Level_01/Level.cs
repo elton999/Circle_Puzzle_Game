@@ -42,7 +42,7 @@ namespace ball.Gameplay.Level_01
             {
                 this.World.Remove(this.Players[i].CBody);
             }
-            this.Players = new List<GameObject>();
+            this.Players.Clear();
             this.WhiteCircle = null;
             this.LevelReady = false;
         }
