@@ -11,7 +11,7 @@ using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace ball.Gameplay.Level_02
+namespace ball.Gameplay.Levels.Level_02
 {
     public class Level : Stage
     {

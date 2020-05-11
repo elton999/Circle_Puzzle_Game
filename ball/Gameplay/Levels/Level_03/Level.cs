@@ -7,22 +7,23 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using tainicom.Aether.Physics2D.Dynamics;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
-using tainicom.Aether.Physics2D.Dynamics;
+using ball.Gameplay.MemoryGame;
 
 
-namespace ball.Gameplay.Level_03
+namespace ball.Gameplay.Levels.Level_03
 {
     public class Level : Stage
     {
         List<WhiteCircle> Circle = new List<WhiteCircle>();
-        MemoryGame memoryGame;
+        MemoryGame.MemoryGame memoryGame;
 
         public override void Start(ContentManager Content, World World, MouseManager mouse)
         {
             this.World = World;
-            memoryGame = new MemoryGame();
+            memoryGame = new MemoryGame.MemoryGame();
             memoryGame.WhiteCirclesList = new List<MemoryGameWhiteCircle>();
             for (int i = 0; i < 2; i++)
             {

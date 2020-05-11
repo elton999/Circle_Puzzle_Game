@@ -11,7 +11,7 @@ using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace ball.Gameplay
+namespace ball.Gameplay.MemoryGame
 {
     public class MemoryGameWhiteCircle : GameObject
     {

@@ -93,9 +93,9 @@ namespace ball.Managers
 
         public void SetAllLevels(ContentManager Content)
         {
-            this.Levels.Add(new Gameplay.Level_01.Level());
-            this.Levels.Add(new Gameplay.Level_02.Level());
-            this.Levels.Add(new Gameplay.Level_03.Level());
+            this.Levels.Add(new Gameplay.Levels.Level_01.Level());
+            this.Levels.Add(new Gameplay.Levels.Level_02.Level());
+            this.Levels.Add(new Gameplay.Levels.Level_03.Level());
         }
 
         public void StartLevel()

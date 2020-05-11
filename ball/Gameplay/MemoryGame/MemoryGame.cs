@@ -10,8 +10,9 @@ using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
+using ball.Gameplay.MemoryGame;
 
-namespace ball.Gameplay
+namespace ball.Gameplay.MemoryGame
 {
     public class MemoryGame : GameObject
     {
