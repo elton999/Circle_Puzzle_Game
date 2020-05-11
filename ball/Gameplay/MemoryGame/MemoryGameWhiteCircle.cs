@@ -41,6 +41,12 @@ namespace ball.Gameplay.MemoryGame
             this._mouseOver = true;
         }
 
+
+        public virtual void InitialAnimationUpdate() { }
+        public virtual void SeparationAnimationUpdade () { }
+        public virtual void SequenceAnimationUpdate() { }
+        public virtual void DefaultPostion() { }
+
         // initial animation
         private float _time;
         private float _timeInitialAnimation;
@@ -50,13 +56,13 @@ namespace ball.Gameplay.MemoryGame
         private int _timeExeposionAnimation;
 
 
-        private Vector2 _InitialPosition;
-        private Vector2 _shakePosition;
-        private Vector2 _positionAfterExposion;
-        private float _positionAfterExposionFrame = 20;
-        private float _shakeMagnitude = 2f;
-        private static readonly Random getrandom = new Random();
-
+        public Vector2 _InitialPosition;
+        public  Vector2 _shakePosition;
+        public Vector2 _positionAfterExposion;
+        public Vector2 _position;
+        public float _positionAfterExposionFrame = 20;
+        public float _shakeMagnitude = 2f;
+        public static readonly Random getrandom = new Random();
 
         // gameplay
         public enum GameStatus { NONE, SEQUENCE, PLAY, LOSE, WIN }
@@ -64,7 +70,7 @@ namespace ball.Gameplay.MemoryGame
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 _position = this._Screem.getCenterScreem;
+            _position = this._Screem.getCenterScreem;
             if (_InitialPosition == Vector2.Zero) _InitialPosition = this._Screem.getCenterScreem;
 
             _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -77,18 +83,8 @@ namespace ball.Gameplay.MemoryGame
             {
                 if (_time % 0.2f >= 0.032f && _timeExeposionAnimation != 4)
                 {
-                    lock (getrandom)
-                    {
-                        int randomX = getrandom.Next(5);
-                        int randomY = getrandom.Next(5);
-
-
-                        _shakePosition = new Vector2(
-                            (randomX * _shakeMagnitude) + _InitialPosition.X,
-                            (randomY * _shakeMagnitude) + _InitialPosition.Y
-                        );
-
-                    }
+                    this.InitialAnimationUpdate();
+                   
                     _time = 0;
                 }
 
@@ -116,16 +112,9 @@ namespace ball.Gameplay.MemoryGame
                 {
                     this.BlackCircle.Scale = 1;
 
+                    this.SeparationAnimationUpdade();
 
-                    switch (this.Id)
-                    {
-                        case 0:
-                            _positionAfterExposion.X = (((_position.X / 2f) / ((20 - _positionAfterExposionFrame) * 2f))) + (_position.X / 2f);
-                            break;
-                        case 1:
-                            _positionAfterExposion.X = ((_position.X * 2) - (_position.X / ((20 - _positionAfterExposionFrame) * 2f))) - (_position.X / 2f);
-                            break;
-                    }
+                    
 
                     _positionAfterExposionFrame--;
                     _timeInitialAnimation = 0;
@@ -141,17 +130,8 @@ namespace ball.Gameplay.MemoryGame
             #region gameplay
             else
             {
-                switch (this.Id)
-                {
-                    case 0:
-                        _position.X -= _position.X / 2f;
-                        break;
-                    case 1:
-                        _position.X += _position.X / 2f;
-                        break;
-                }
-
-
+                this.DefaultPostion();
+                
                 if (_time % 0.2f >= (0.032f * 3) && _CurrentStatus == GameStatus.NONE)
                 {
                     _time = 0;
@@ -163,17 +143,8 @@ namespace ball.Gameplay.MemoryGame
                 {
                     if (_time % 2f >= 0.032f)
                     {
-                        switch (this.Id)
-                        {
-                            case 0:
-                                if (this.Sequence[SequenceNumPart][SequenceNum] == 0) this.SetTransparent(true);
-                                else this.SetTransparent(false);
-                                break;
-                            case 1:
-                                if (this.Sequence[SequenceNumPart][SequenceNum] == 1) this.SetTransparent(true);
-                                else this.SetTransparent(false);
-                                break;
-                        }
+                        this.SequenceAnimationUpdate();
+                        
                         _time = 0;
                     }
                     this.NextStep(gameTime);
@@ -210,7 +181,7 @@ namespace ball.Gameplay.MemoryGame
         }
 
         private float _transparentValue = 1f;
-        private void SetTransparent(bool more)
+        public void SetTransparent(bool more)
         {
             if (!_IsWaiting)
             {
@@ -309,31 +280,7 @@ namespace ball.Gameplay.MemoryGame
         public List<List<int>> Sequence = new List<List<int>>();
         public int SequenceNum = 0;
         public int SequenceNumPart = 0;
-        public void SetSequence()
-        {
-            // part 1
-            this.Sequence.Add(new List<int>());
-            this.Sequence[0].Add(0);
-            this.Sequence[0].Add(0);
-            this.Sequence[0].Add(1);
-            this.Sequence[0].Add(0);
-            // part 2
-            this.Sequence.Add(new List<int>());
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(0);
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(0);
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(1);
-            // part 3
-            /*this.Sequence.Add(new List<int>());
-            this.Sequence[2].Add(1);
-            this.Sequence[2].Add(1);
-            this.Sequence[2].Add(0);
-            this.Sequence[2].Add(1);
-            this.Sequence[2].Add(0);
-            this.Sequence[2].Add(0);*/
-        }
+        public virtual void SetSequence() { }
 
         public List<int> CurrentSequence
         {

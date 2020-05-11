@@ -12,7 +12,6 @@ using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using ball.Gameplay.MemoryGame;
 
-
 namespace ball.Gameplay.Levels.Level_03
 {
     public class Level : Stage
@@ -79,6 +78,88 @@ namespace ball.Gameplay.Levels.Level_03
 
     public class WhiteCircle : MemoryGameWhiteCircle
     {
-        
+
+        public override void SetSequence()
+        {
+            // part 1
+            this.Sequence.Add(new List<int>());
+            this.Sequence[0].Add(0);
+            this.Sequence[0].Add(0);
+            this.Sequence[0].Add(1);
+            this.Sequence[0].Add(0);
+            // part 2
+            this.Sequence.Add(new List<int>());
+            this.Sequence[1].Add(1);
+            this.Sequence[1].Add(0);
+            this.Sequence[1].Add(1);
+            this.Sequence[1].Add(0);
+            this.Sequence[1].Add(1);
+            this.Sequence[1].Add(1);
+            // part 3
+            /*this.Sequence.Add(new List<int>());
+            this.Sequence[2].Add(1);
+            this.Sequence[2].Add(1);
+            this.Sequence[2].Add(0);
+            this.Sequence[2].Add(1);
+            this.Sequence[2].Add(0);
+            this.Sequence[2].Add(0);*/
+        }
+
+        public override void DefaultPostion()
+        {
+            switch (this.Id)
+            {
+                case 0:
+                    _position.X -= _position.X / 2f;
+                    break;
+                case 1:
+                    _position.X += _position.X / 2f;
+                    break;
+            }
+        }
+
+        public override void SequenceAnimationUpdate()
+        {
+            switch (this.Id)
+            {
+                case 0:
+                    if (this.Sequence[SequenceNumPart][SequenceNum] == 0) this.SetTransparent(true);
+                    else this.SetTransparent(false);
+                    break;
+                case 1:
+                    if (this.Sequence[SequenceNumPart][SequenceNum] == 1) this.SetTransparent(true);
+                    else this.SetTransparent(false);
+                    break;
+            }
+        }
+
+        public override void InitialAnimationUpdate()
+        {
+            lock (getrandom)
+            {
+                int randomX = getrandom.Next(5);
+                int randomY = getrandom.Next(5);
+
+
+                _shakePosition = new Vector2(
+                    (randomX * _shakeMagnitude) + _InitialPosition.X,
+                    (randomY * _shakeMagnitude) + _InitialPosition.Y
+                );
+
+            }
+        }
+
+        public override void SeparationAnimationUpdade()
+        {
+            switch (this.Id)
+            {
+                case 0:
+                    _positionAfterExposion.X = (((_position.X / 2f) / ((20 - _positionAfterExposionFrame) * 2f))) + (_position.X / 2f);
+                    break;
+                case 1:
+                    _positionAfterExposion.X = ((_position.X * 2) - (_position.X / ((20 - _positionAfterExposionFrame) * 2f))) - (_position.X / 2f);
+                    break;
+            }
+        }
     }
 }
