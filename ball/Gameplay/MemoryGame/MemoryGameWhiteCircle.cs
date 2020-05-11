@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
-using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace ball.Gameplay.MemoryGame
@@ -71,7 +69,7 @@ namespace ball.Gameplay.MemoryGame
         public override void Update(GameTime gameTime)
         {
             _position = this._Screem.getCenterScreem;
-            if (_InitialPosition == Vector2.Zero) _InitialPosition = this._Screem.getCenterScreem;
+            _InitialPosition = this._Screem.getCenterScreem;
 
             _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             _timeInitialAnimation += (float)gameTime.ElapsedGameTime.TotalSeconds;
