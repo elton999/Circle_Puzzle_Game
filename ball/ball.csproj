@@ -47,6 +47,8 @@
     <Compile Include="Gameplay\Level_01\Level.cs" />
     <Compile Include="Gameplay\Level_02\Level.cs" />
     <Compile Include="Gameplay\Level_03\Level.cs" />
+    <Compile Include="Gameplay\MemoryGame.cs" />
+    <Compile Include="Gameplay\MemoryGameWhiteCircle.cs" />
     <Compile Include="Gameplay\Stage.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Menu\Credits.cs" />
