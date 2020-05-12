@@ -53,13 +53,8 @@ namespace ball.Gameplay.MemoryGame
                         }
                         this.ClickSquence.Clear();
                     }
-
-                    if (WhiteCirclesList[0].Finished)
-                    {
-                        this.Finished = true;
-                    }
                 }
-
+                if (WhiteCirclesList[0].Finished) this.Finished = true;
             }
         }
 

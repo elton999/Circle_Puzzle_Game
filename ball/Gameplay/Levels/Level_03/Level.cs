@@ -45,7 +45,7 @@ namespace ball.Gameplay.Levels.Level_03
         {
             for (int i = 0; i < this.Players.Count(); i++)
             {
-                this.World.Remove(this.Players[i].CBody);
+                if(this.Players[i].CBody != null) this.World.Remove(this.Players[i].CBody);
             }
             this.Circle.Clear();
             this.Players.Clear();
@@ -84,25 +84,21 @@ namespace ball.Gameplay.Levels.Level_03
             // part 1
             this.Sequence.Add(new List<int>());
             this.Sequence[0].Add(0);
+            this.Sequence[0].Add(1);
+            // part 2
+            this.Sequence.Add(new List<int>());
+            this.Sequence[0].Add(0);
             this.Sequence[0].Add(0);
             this.Sequence[0].Add(1);
             this.Sequence[0].Add(0);
-            // part 2
-            this.Sequence.Add(new List<int>());
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(0);
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(0);
-            this.Sequence[1].Add(1);
-            this.Sequence[1].Add(1);
             // part 3
-            /*this.Sequence.Add(new List<int>());
+            this.Sequence.Add(new List<int>());
             this.Sequence[2].Add(1);
+            this.Sequence[2].Add(0);
             this.Sequence[2].Add(1);
             this.Sequence[2].Add(0);
             this.Sequence[2].Add(1);
-            this.Sequence[2].Add(0);
-            this.Sequence[2].Add(0);*/
+            this.Sequence[2].Add(1);
         }
 
         public override void DefaultPostion()

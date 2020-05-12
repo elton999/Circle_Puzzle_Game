@@ -139,13 +139,17 @@ namespace ball.Gameplay.MemoryGame
 
                 if (_CurrentStatus == GameStatus.SEQUENCE)
                 {
-                    if (_time % 2f >= 0.032f)
+                    if (this.SequenceNumPart < this.Sequence.Count())
                     {
-                        this.SequenceAnimationUpdate();
-                        
-                        _time = 0;
-                    }
-                    this.NextStep(gameTime);
+                        if (_time % 2f >= 0.032f)
+                        {
+                            this.SequenceAnimationUpdate();
+
+                            _time = 0;
+                        }
+                        this.NextStep(gameTime);
+                    } else Finished = true;
+                    
                 }
                 else if (_CurrentStatus == GameStatus.LOSE) this.SightLose(gameTime);
                 else if (_CurrentStatus == GameStatus.PLAY)
@@ -168,6 +172,8 @@ namespace ball.Gameplay.MemoryGame
                 else if (_CurrentStatus == GameStatus.WIN)
                 {
                     this.SightWin(gameTime);
+                    if (SequenceNumPart == this.Sequence.Count()) this.Finished = true;
+                    Console.WriteLine(SequenceNumPart);
                 }
                 #endregion
 
