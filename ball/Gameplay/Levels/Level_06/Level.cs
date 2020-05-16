@@ -69,13 +69,13 @@ namespace ball.Gameplay.Levels.Level_06
     {
 
         GameObject Ball;
-        GameObject Bar;
+        Bar Bar;
 
         public ContentManager Content;
 
         public void Start()
         {
-            Vector2 _positionBall = new Vector2(this._Screem.getCenterScreem.X, this._Screem.getCenterScreem.Y -60f);
+            Vector2 _positionBall = new Vector2(this._Screem.getCenterScreem.X, this._Screem.getCenterScreem.Y -26f);
 
             this.Ball = new GameObject();
             this.Ball.Sprite = Content.Load<Texture2D>("Sprites/Level_6/ball");
@@ -84,16 +84,20 @@ namespace ball.Gameplay.Levels.Level_06
             this.Ball.SetCircleCollision(this.World);
             this.Ball.CBody.BodyType = BodyType.Dynamic;
             this.Ball.CBody.SetTransform(_positionBall, 0f);
+            this.Ball.CBody.Tag = "ball";
 
-
-            this.Bar = new GameObject();
+            this.Bar = new Bar();
             this.Bar.Sprite = Content.Load<Texture2D>("Sprites/Level_6/bar");
-            this.Bar._bodySize = new Vector2(100, 16);
+            this.Bar._bodySize = new Vector2(170, 30);
+            this.Bar.TextureSize = this.Bar._bodySize;
             this.Bar.SetBoxCollision(this.World);
-            this.Bar.CBody.BodyType = BodyType.Static;
-            this.Bar.TextureSize = this._bodySize;
+            this.Bar.CBody.BodyType = BodyType.Kinematic;
             this.Bar.CBody.SetTransform(this._Screem.getCenterScreem, 0f);
-            this.Bar.CBody.SetRestitution(2);
+            this.Bar.CBody.SetRestitution(0);
+            this.Bar.Ball = this.Ball;
+            this.Bar._Screem = this._Screem;
+            this.Bar.CBody.Tag = "bar";
+            
         }
 
         bool _keyPressed = false;
@@ -105,19 +109,86 @@ namespace ball.Gameplay.Levels.Level_06
             {
                 Vector2 _PositionBar = new Vector2(this.Bar.CBody.Position.X - _MoveForce, this.Bar.CBody.Position.Y);
                 this.Bar.CBody.SetTransform(_PositionBar, 0f);
+
+                if (!this._keyPressed)
+                {
+                    Vector2 _positionBall = new Vector2(this.Ball.CBody.Position.X - _MoveForce, this.Ball.CBody.Position.Y);
+                    this.Ball.CBody.SetTransform(ref _positionBall,  0f);
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 Vector2 _PositionBar = new Vector2(this.Bar.CBody.Position.X + _MoveForce, this.Bar.CBody.Position.Y);
                 this.Bar.CBody.SetTransform(_PositionBar, 0f);
+
+                if (!this._keyPressed)
+                {
+                    Vector2 _positionBall = new Vector2(this.Ball.CBody.Position.X + _MoveForce, this.Ball.CBody.Position.Y);
+                    this.Ball.CBody.SetTransform(ref _positionBall, 0f);
+                }
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !_keyPressed)
+            {
+                _keyPressed = true;
+
+                Vector2 _force = new Vector2(0, -1000000);
+                if (this.Ball.CBody.Position.X > this._Screem.getCenterScreem.X) _force = new Vector2(1000000, -1000000);
+                else if (this.Ball.CBody.Position.X < this._Screem.getCenterScreem.X) _force = new Vector2(-1000000, -1000000);
+                
+                this.Bar.CBody.SetRestitution(8);
+                this.Ball.CBody.ApplyForce(ref _force);
+            }
+
+            this.Bar.Update(gameTime);
+            
         }
+        
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             this.Ball.DrawSprite(spriteBatch);
             this.Bar.DrawSprite(spriteBatch);
+        }
+    }
+
+    public class Bar : GameObject
+    {
+        public GameObject Ball;
+        Vector2 _OldPositionBar = Vector2.Zero;
+        float _time;
+
+        public override void Update(GameTime gameTime)
+        {
+            if (this._OldPositionBar != Vector2.Zero)
+            {
+                _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_time > 0.4f)
+                {
+                    if (this._OldPositionBar.X > this._Screem.getCenterScreem.X)
+                    {
+                        this.Ball.CBody.ApplyLinearImpulse(new Vector2(this.CBody.LinearVelocity.X - 100, this.CBody.LinearVelocity.Y));
+                        this._OldPositionBar = Vector2.Zero;
+                    }
+                    else if (this._OldPositionBar.X < this._Screem.getCenterScreem.X)
+                    {
+                        this.Ball.CBody.ApplyLinearImpulse(new Vector2(this.CBody.LinearVelocity.X + 100, this.CBody.LinearVelocity.Y));
+                        this._OldPositionBar = Vector2.Zero;
+                    }
+                    _time = 0;
+                }
+                
+            }
+        }
+
+        public override void OnCollision(string tag)
+        {
+            if (tag == "ball")
+            {
+                this._OldPositionBar = this.CBody.Position;
+            }
         }
     }
 
@@ -135,7 +206,7 @@ namespace ball.Gameplay.Levels.Level_06
             this._LeftBar._bodySize = new Vector2(7, this._Screem.getCurrentResolutionSize.Y);
             this._LeftBar.SetBoxCollision(this.World);
             this._LeftBar.CBody.BodyType = BodyType.Static;
-            this._LeftBar.CBody.SetRestitution(2);
+            this._LeftBar.CBody.SetRestitution(3);
             this._LeftBar.CBody.Position = new Vector2(0, this._Screem.getCenterScreem.Y);
             this._LeftBar.Origin = new Vector2(4, this._Screem.getCenterScreem.Y);
 
@@ -145,7 +216,7 @@ namespace ball.Gameplay.Levels.Level_06
             this._RightBar._bodySize = new Vector2(7, this._Screem.getCurrentResolutionSize.Y);
             this._RightBar.SetBoxCollision(this.World);
             this._RightBar.CBody.BodyType = BodyType.Static;
-            this._RightBar.CBody.SetRestitution(2);
+            this._RightBar.CBody.SetRestitution(3);
             this._RightBar.CBody.Position = new Vector2(this._Screem.getCurrentResolutionSize.X, this._Screem.getCenterScreem.Y);
             this._RightBar.Origin = new Vector2(4, this._Screem.getCenterScreem.Y);
 
@@ -155,7 +226,7 @@ namespace ball.Gameplay.Levels.Level_06
             this._TopBar._bodySize = new Vector2(this._Screem.getCurrentResolutionSize.X, 7);
             this._TopBar.SetBoxCollision(this.World);
             this._TopBar.CBody.BodyType = BodyType.Static;
-            this._TopBar.CBody.SetRestitution(2);
+            this._TopBar.CBody.SetRestitution(3);
             this._TopBar.CBody.Position = new Vector2(this._Screem.getCenterScreem.X, 0);
             this._TopBar.Origin = new Vector2(this._Screem.getCenterScreem.X, 4);
 
