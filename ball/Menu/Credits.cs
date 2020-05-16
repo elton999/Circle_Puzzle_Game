@@ -31,7 +31,7 @@ namespace ball.Menu
 
         public void SetSizes()
         {
-            this.TitleSize = this.FontBold.MeasureString("Ball");
+            this.TitleSize = this.FontBold.MeasureString("Circle");
             this.AddicionalCredits.Add(this.FontRegular.MeasureString("a game by Elton Silva"));
             this.AddicionalCreditsPosition.Add(Vector2.One);
         }
@@ -43,10 +43,10 @@ namespace ball.Menu
         {
             Vector2 _center = new Vector2(this.Screem.getCenterScreem.X, this.Screem.getCenterScreem.Y);
 
-            this.Position.X = _center.X - (this.TitleSize.Y / 2f);
-            this.Position.Y = _center.Y - (this.TitleSize.X / 2f);
+            this.Position.X = _center.X - (this.TitleSize.X / 2f);
+            this.Position.Y = _center.Y - (this.TitleSize.Y / 2f);
 
-            this.AddicionalCreditsPosition[0] = new Vector2(_center.X - (this.AddicionalCredits[0].X / 2f) + 18f, _center.Y - (this.AddicionalCredits[0].Y / 2f) + 60f);
+            this.AddicionalCreditsPosition[0] = new Vector2(_center.X - (this.AddicionalCredits[0].X / 2f), _center.Y - (this.AddicionalCredits[0].Y / 2f) + 60f);
 
             _time += (float)gameTime.TotalGameTime.TotalSeconds;
             if (this.Transparent < 1f && _time % 0.2f >= 0.032f)
@@ -68,7 +68,7 @@ namespace ball.Menu
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(this.FontBold, "Ball", this.Position, this.SpriteColor * this.Transparent);
+            spriteBatch.DrawString(this.FontBold, "Circle", this.Position, this.SpriteColor * this.Transparent);
             spriteBatch.DrawString(this.FontRegular, "a game by Elton Silva", this.AddicionalCreditsPosition[0], this.SpriteColor * this.AddicionalCreditsTransparence);
         }
     }

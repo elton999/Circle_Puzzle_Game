@@ -87,10 +87,10 @@ namespace ball.Gameplay.Levels.Level_03
             this.Sequence[0].Add(1);
             // part 2
             this.Sequence.Add(new List<int>());
-            this.Sequence[0].Add(0);
-            this.Sequence[0].Add(0);
-            this.Sequence[0].Add(1);
-            this.Sequence[0].Add(0);
+            this.Sequence[1].Add(0);
+            this.Sequence[1].Add(0);
+            this.Sequence[1].Add(1);
+            this.Sequence[1].Add(0);
             // part 3
             this.Sequence.Add(new List<int>());
             this.Sequence[2].Add(1);

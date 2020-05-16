@@ -43,7 +43,7 @@ namespace ball.Gameplay.Levels.Level_04
 
         public override void Destroy()
         {
-            for (int i = 0; i < this.Players.Count(); i++)
+            for (int i = 0; i < this.Players.Count()-1; i++)
             {
                 this.World.Remove(this.Players[i].CBody);
             }
