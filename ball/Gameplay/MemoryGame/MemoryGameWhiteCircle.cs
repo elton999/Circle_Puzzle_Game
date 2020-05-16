@@ -173,7 +173,6 @@ namespace ball.Gameplay.MemoryGame
                 {
                     this.SightWin(gameTime);
                     if (SequenceNumPart == this.Sequence.Count()) this.Finished = true;
-                    Console.WriteLine(SequenceNumPart);
                 }
                 #endregion
 

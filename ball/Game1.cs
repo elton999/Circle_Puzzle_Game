@@ -36,6 +36,7 @@ namespace ball
             GameManager.Screem = ScreemController;
             _spriteBatchEffect = new BasicEffect(graphics.GraphicsDevice);
             _spriteBatchEffect.TextureEnabled = true;
+            
         }
         
         protected override void UnloadContent()
@@ -60,7 +61,6 @@ namespace ball
             this.ScreemController.BeginDraw(GraphicsDevice, spriteBatch);
             this.GameManager.Draw(spriteBatch, GraphicsDevice);
             this.ScreemController.EndDraw(GraphicsDevice, spriteBatch);
-
             base.Draw(gameTime);
         }
     }

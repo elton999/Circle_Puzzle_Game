@@ -55,13 +55,14 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content)
         {
-            CurrentlyLevel = 0;
+            CurrentlyLevel = 4;
             this.Content = Content;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
 
             this.World = new World();
+            this.World.Gravity = new Vector2(0, 10);
 
             this.Mouse = new MouseManager();
             this.MouseWhite = Content.Load<Texture2D>("Sprites/UI/upLeft_white");
@@ -97,6 +98,7 @@ namespace ball.Managers
             this.Levels.Add(new Gameplay.Levels.Level_02.Level());
             this.Levels.Add(new Gameplay.Levels.Level_03.Level());
             this.Levels.Add(new Gameplay.Levels.Level_04.Level());
+            this.Levels.Add(new Gameplay.Levels.Level_05.Level());
         }
 
         public void StartLevel()
