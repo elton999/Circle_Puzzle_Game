@@ -47,9 +47,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="412.79188"
-     inkscape:cy="-1692.5447"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="373.38808"
+     inkscape:cy="-1231.3318"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -547,16 +547,19 @@
        sodipodi:end="1.5426878"
        sodipodi:open="true"
        d="m 100.22816,741.46143 a 4.6302085,4.6302085 0 0 1 -4.643625,-4.58744 4.6302085,4.6302085 0 0 1 4.558135,-4.6724 4.6302085,4.6302085 0 0 1 4.70098,4.52864 4.6302085,4.6302085 0 0 1 -4.49897,4.72939"
-       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Pinball\small_circle.png"
+       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Level_6\ball.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.39162123;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.56602287;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect885"
-       width="26.458334"
-       height="3.96875"
-       x="86.265297"
-       y="741.72601" />
+       width="44.979168"
+       height="7.9375"
+       x="78.220482"
+       y="741.6861"
+       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Level_6\bar.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path904-9-4"
@@ -674,7 +677,7 @@
        sodipodi:end="1.5677947"
        sodipodi:open="true"
        d="m 180.66261,657.87472 a 7.9375,7.9375 0 0 1 -7.96081,-7.914 7.9375,7.9375 0 0 1 7.91388,-7.96093 7.9375,7.9375 0 0 1 7.96105,7.91376 7.9375,7.9375 0 0 1 -7.91364,7.96117"
-       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Pinball\small_circle.png"
+       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Level_6\SmallBallWall.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path

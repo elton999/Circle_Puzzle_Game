@@ -55,7 +55,7 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content)
         {
-            CurrentlyLevel = 5;
+            CurrentlyLevel = 0;
             this.Content = Content;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
@@ -111,7 +111,7 @@ namespace ball.Managers
 
         public void Update(GameTime gameTime)
         {
-            this.World.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, (1f / 30f)));
+            for(int i = 0; i < 4; i++) this.World.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds, (1f / 30f)));
 
             if (this.Levels[this.CurrentlyLevel].LevelReady == false) this.StartLevel();
 
