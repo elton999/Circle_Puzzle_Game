@@ -77,7 +77,7 @@ namespace ball.Gameplay.Levels.Level_06
             this.CircleAndBar.Destroy();
             for (int i = 0; i < this.ballWalls.Count(); i++)
             {
-                this.World.Remove(this.ballWalls[i].CBody);
+                if(this.ballWalls[i].CBody != null) this.World.Remove(this.ballWalls[i].CBody);
             }
             this.Backgrounds.Clear();
             this.ballWalls.Clear();

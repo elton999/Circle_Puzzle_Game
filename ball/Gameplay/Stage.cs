@@ -11,6 +11,7 @@ namespace ball.Gameplay
     {
         public MouseManager Mouse;
         public ScreemController Screem;
+        public SpriteFont FontBold;
         public World World;
         public bool WhiteUI { get; set; }
         public bool UI { get; set; }

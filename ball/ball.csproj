@@ -50,6 +50,7 @@
     <Compile Include="Gameplay\Levels\Level_04\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_05\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_06\Level.cs" />
+    <Compile Include="Gameplay\Levels\Level_07\Level.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGame.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGameWhiteCircle.cs" />
     <Compile Include="Gameplay\Stage.cs" />
@@ -133,7 +134,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\Levels\Level_07\" />
     <Folder Include="Gameplay\Levels\Level_08\" />
     <Folder Include="Gameplay\Levels\Level_09\" />
     <Folder Include="Gameplay\Levels\Level_10\" />
