@@ -56,8 +56,8 @@ namespace ball.Gameplay.Levels.Level_02
             {
                 this.World.Remove(this.Players[i].CBody);
             }
-            this.CirclePart = new List<CirclePart>();
-            this.Players = new List<GameObject>();
+            this.CirclePart.Clear();
+            this.Players.Clear();
             this.Finished = false;
             this.LevelReady = false;
         }

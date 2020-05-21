@@ -54,10 +54,13 @@ namespace ball.Managers
         ContentManager Content;
         
 
-        public GameManager(ContentManager Content)
+        public GameManager(ContentManager Content, ScreemController ScreemController)
         {
-            CurrentlyLevel = 4;
+            CurrentlyLevel = 1;
+
             this.Content = Content;
+            this.Screem = ScreemController;
+
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
@@ -72,9 +75,11 @@ namespace ball.Managers
             this.Mouse.SetPointMouse(this.World);
             this.Mouse.Show = true;
 
+            this.SceneUI = new Hud();
+            this.SceneUI.Start(this.Content, this.World, this.Mouse, this.Screem);
+
             this.SetAllLevels(Content);
             this.SetCreditsScene();
-            
         }
 
         public void SetCreditsScene()
@@ -110,10 +115,8 @@ namespace ball.Managers
             this.SceneLevel.Screem = this.Screem;
             this.SceneLevel.FontBold = this.FontBold;
             this.SceneLevel.Start(Content, World, Mouse);
-
-            SceneUI = new Hud();
-            SceneUI.Start(this.Content, this.World, this.Mouse, this.Screem);
-            SceneUI.SetLevel(this.SceneLevel);
+            
+            this.SceneUI.SetLevel(this.SceneLevel);
         }
 
         public void Update(GameTime gameTime)

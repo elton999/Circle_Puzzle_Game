@@ -53,7 +53,7 @@ namespace ball.Gameplay.Levels.Level_05
 
         public override void DrawLevel(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
-            this.Draw(spriteBatch, graphicsDevice);
+            if(!this.Finished) this.Draw(spriteBatch, graphicsDevice);
         }
     }
     #endregion
@@ -171,8 +171,12 @@ namespace ball.Gameplay.Levels.Level_05
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this.DrawSprite(spriteBatch);
-            if (!this.InitialAnimation) this.SmallCircles.DrawSprite(spriteBatch);
+            if (!this.Finished)
+            {
+                this.DrawSprite(spriteBatch);
+                if (!this.InitialAnimation) this.SmallCircles.DrawSprite(spriteBatch);
+            }
+            
         }
     }
     #endregion

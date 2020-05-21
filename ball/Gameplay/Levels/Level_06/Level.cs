@@ -114,7 +114,7 @@ namespace ball.Gameplay.Levels.Level_06
 
         public override void DrawLevel(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
-            this.Draw(spriteBatch, graphicsDevice);
+            if (!this.Finished) this.Draw(spriteBatch, graphicsDevice);
         }
 
     }

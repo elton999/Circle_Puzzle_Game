@@ -31,9 +31,11 @@ namespace ball
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameManager = new Managers.GameManager(Content);
             ScreemController = new ScreemController(graphics, graphics.GraphicsDevice.Adapter, GraphicsDevice, 0);
+
+            GameManager = new Managers.GameManager(Content, ScreemController);
             GameManager.Screem = ScreemController;
+            
             _spriteBatchEffect = new BasicEffect(graphics.GraphicsDevice);
             _spriteBatchEffect.TextureEnabled = true;
             
