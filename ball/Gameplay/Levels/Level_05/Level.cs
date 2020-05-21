@@ -72,6 +72,7 @@ namespace ball.Gameplay.Levels.Level_05
         private float RotationNum = 5;
 
         public bool Finished = false;
+        public bool FinalAnimation = false;
         
         public void Start()
         {
@@ -95,10 +96,11 @@ namespace ball.Gameplay.Levels.Level_05
 
         public override void Update(GameTime gameTime)
         {
-            _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
 
             if (InitialAnimation)
             {
+                _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (_time > 2)
                 {
                     if (this._ChangeSprite)
@@ -129,7 +131,7 @@ namespace ball.Gameplay.Levels.Level_05
                     this._SetRotation = false;
                 }
 
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed && !FinalAnimation)
                 {
                     Vector2 _ClickPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
                     if (this._LastClick == Vector2.Zero)
@@ -148,8 +150,22 @@ namespace ball.Gameplay.Levels.Level_05
                         }
                     }
                 } else if (Mouse.GetState().LeftButton == ButtonState.Released) this._LastClick = Vector2.Zero;
-                
-                if ((this.Rotation < 0.5f && this.Rotation > -0.3f) || (this.Rotation > 5.8f && this.Rotation < 6.3)) this.Finished = true;
+
+                if (((this.Rotation < 0.5f && this.Rotation > -0.3f) || (this.Rotation > 5.8f && this.Rotation < 6.3)) && !this.FinalAnimation)
+                {
+                    _time = 0;
+                    this.FinalAnimation = true;
+                }
+
+                if (FinalAnimation)
+                {
+                    _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (_time > 2f && this.Rotation > 0)
+                    {
+                        this.Rotation -= 0.01f;
+                    }
+                    else if(_time > 2f && this.Rotation <= 0) this.Finished = true;
+                }
             }
         }
 

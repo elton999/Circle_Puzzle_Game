@@ -56,7 +56,7 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content)
         {
-            CurrentlyLevel = 6;
+            CurrentlyLevel = 4;
             this.Content = Content;
             this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");

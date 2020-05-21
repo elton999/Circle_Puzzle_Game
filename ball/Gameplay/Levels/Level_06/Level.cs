@@ -71,6 +71,7 @@ namespace ball.Gameplay.Levels.Level_06
                 this.Backgrounds.Add(ballWall);
             }
 
+            this.SetBackgroundColor = Color.White;
             this.LevelReady = true;
         }
 
