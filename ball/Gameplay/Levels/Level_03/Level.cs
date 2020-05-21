@@ -14,31 +14,18 @@ using ball.Gameplay.MemoryGame;
 
 namespace ball.Gameplay.Levels.Level_03
 {
+    #region Level
     public class Level : Stage
     {
         List<WhiteCircle> Circle = new List<WhiteCircle>();
         MemoryGame.MemoryGame memoryGame;
 
-        public override void Start(ContentManager Content, World World, MouseManager mouse)
+        public override void Start(ContentManager Content, World World, MouseManager Mouse)
         {
             this.World = World;
-            memoryGame = new MemoryGame.MemoryGame();
-            memoryGame.WhiteCirclesList = new List<MemoryGameWhiteCircle>();
-            for (int i = 0; i < 2; i++)
-            {
-                this.Circle.Add(new WhiteCircle());
-                this.Circle[i].Id = i;
-                this.Circle[i]._Mouse = mouse;
-                this.Circle[i].Sprite = Content.Load<Texture2D>("Sprites/white_circle");
-                this.Circle[i].BlackCircle = new GameObject();
-                this.Circle[i].BlackCircle.Sprite = Content.Load<Texture2D>("Sprites/black_circle");
-                this.Circle[i].Start(World);
-                this.Players.Add(this.Circle[i]);
-                memoryGame.WhiteCirclesList.Add(this.Circle[i]);
-            }
-            this.Players.Add(memoryGame);
-            this.SetBackgroundColor = Color.White;
-            this.LevelReady = true;
+            this.Mouse = Mouse;
+            this.Content = Content;
+            this.ResetLevel();
         }
 
         public override void Destroy()
@@ -52,8 +39,26 @@ namespace ball.Gameplay.Levels.Level_03
             this.LevelReady = false;
         }
 
-        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
+        public override void ResetLevel()
         {
+            memoryGame = new MemoryGame.MemoryGame();
+            memoryGame.WhiteCirclesList = new List<MemoryGameWhiteCircle>();
+            for (int i = 0; i < 2; i++)
+            {
+                this.Circle.Add(new WhiteCircle());
+                this.Circle[i].Id = i;
+                this.Circle[i]._Mouse = this.Mouse;
+                this.Circle[i].Sprite = Content.Load<Texture2D>("Sprites/white_circle");
+                this.Circle[i].BlackCircle = new GameObject();
+                this.Circle[i].BlackCircle.Sprite = Content.Load<Texture2D>("Sprites/black_circle");
+                this.Circle[i].Start(World);
+                this.Players.Add(this.Circle[i]);
+                memoryGame.WhiteCirclesList.Add(this.Circle[i]);
+            }
+            this.Players.Add(memoryGame);
+            this.SetBackgroundColor = Color.White;
+            this.LevelReady = true;
+
             this.Finished = false;
             this.LevelReady = true;
         }
@@ -75,7 +80,9 @@ namespace ball.Gameplay.Levels.Level_03
         }
 
     }
+    #endregion
 
+    #region WhiteCircle
     public class WhiteCircle : MemoryGameWhiteCircle
     {
 
@@ -158,4 +165,5 @@ namespace ball.Gameplay.Levels.Level_03
             }
         }
     }
+    #endregion
 }

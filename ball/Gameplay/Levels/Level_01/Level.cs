@@ -13,6 +13,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace ball.Gameplay.Levels.Level_01
 {
+    #region Level
     public class Level : Stage
     {
         public Circle WhiteCircle;
@@ -20,15 +21,16 @@ namespace ball.Gameplay.Levels.Level_01
         public override void Start (ContentManager Content, World World, MouseManager mouse)
         {
             this.World = World;
-            this.ResetLevel(Content, World, mouse);
+            this.Mouse = mouse;
+            this.Content = Content;
+            this.ResetLevel();
         }
 
-        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
+        public override void ResetLevel()
         {
-            this.Mouse = mouse;
             this.WhiteCircle = new Circle();
             this.WhiteCircle._Mouse = this.Mouse;
-            this.WhiteCircle.setWhiteCircle(Content, World);
+            this.WhiteCircle.setWhiteCircle(this.Content, this.World);
             this.Players.Add(this.WhiteCircle);
 
             this.SetBackgroundColor = Color.Black;
@@ -64,7 +66,9 @@ namespace ball.Gameplay.Levels.Level_01
             this.Draw(spriteBatch, graphicsDevice);
         }
     }
+    #endregion
 
+    #region Circle
     public class Circle : GameObject
     {
 
@@ -220,4 +224,5 @@ namespace ball.Gameplay.Levels.Level_01
             this.DrawSprite(spriteBatch);
         }
     }
+    #endregion
 }

@@ -28,7 +28,7 @@ namespace ball.Managers
         public GameStatus CurrentlyStatus;
 
         public Stage SceneLevel;
-        public Scene SceneUI;
+        public Hud SceneUI;
         public Scene SceneMainMenu;
         public Scene CreditsScene;
 
@@ -52,6 +52,7 @@ namespace ball.Managers
         public SpriteFont FontRegular;
         
         ContentManager Content;
+        
 
         public GameManager(ContentManager Content)
         {
@@ -72,8 +73,8 @@ namespace ball.Managers
             this.Mouse.Show = true;
 
             this.SetAllLevels(Content);
-
             this.SetCreditsScene();
+            
         }
 
         public void SetCreditsScene()
@@ -109,6 +110,10 @@ namespace ball.Managers
             this.SceneLevel.Screem = this.Screem;
             this.SceneLevel.FontBold = this.FontBold;
             this.SceneLevel.Start(Content, World, Mouse);
+
+            SceneUI = new Hud();
+            SceneUI.Start(this.Content, this.World, this.Mouse, this.Screem);
+            SceneUI.SetLevel(this.SceneLevel);
         }
 
         public void Update(GameTime gameTime)
@@ -124,6 +129,7 @@ namespace ball.Managers
                 {
                     case GameStatus.PLAY:
                         this.SceneLevel.UpdateLevel(gameTime);
+                        this.SceneUI.Update(gameTime);
                         //change Color Mouse
                         if (this.SceneLevel.WhiteUI) this.Mouse.Sprite = this.MouseWhite;
                         else this.Mouse.Sprite = this.MouseBlack;
@@ -166,9 +172,11 @@ namespace ball.Managers
                 {
                     case GameStatus.PLAY:
                         this.SceneLevel.DrawLevel(spriteBatch, graphicsDevice);
+                        this.SceneUI.Draw(spriteBatch, graphicsDevice);
                         break;
                     case GameStatus.PAUSE:
                         this.SceneLevel.DrawLevel(spriteBatch, graphicsDevice);
+                        this.SceneUI.Draw(spriteBatch, graphicsDevice);
                         break;
                 }
             }

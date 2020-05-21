@@ -13,6 +13,7 @@ using UmbrellaToolKit.UI;
 
 namespace ball.Gameplay.Levels.Level_06
 {
+    #region Level
     public class Level : Stage
     {
 
@@ -20,27 +21,27 @@ namespace ball.Gameplay.Levels.Level_06
         Arena Arena;
         List<CircleWall> ballWalls = new List<CircleWall>();
 
-        public override void Start(ContentManager Content, World World, MouseManager mouse)
+        public override void Start(ContentManager Content, World World, MouseManager Mouse)
         {
-            this.Mouse = mouse;
+            this.Mouse = Mouse;
             this.World = World;
-
-            this.ResetLevel(Content, World, mouse);
-            this.LevelReady = true;
+            this.Content = Content;
+            this.ResetLevel();
+            
         }
 
-        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
+        public override void ResetLevel()
         {
             CircleAndBar = new CircleAndBar();
             CircleAndBar._Screem = this.Screem;
             CircleAndBar.Content = Content;
-            CircleAndBar._Mouse = mouse;
+            CircleAndBar._Mouse = this.Mouse;
             CircleAndBar.World = World;
             CircleAndBar.Start();
 
             Arena = new Arena();
             Arena._Screem = this.Screem;
-            Arena._Mouse = mouse;
+            Arena._Mouse = this.Mouse;
             Arena.World = World;
             Arena.Start();
             Arena._BottomBar.Ball = CircleAndBar;
@@ -69,6 +70,8 @@ namespace ball.Gameplay.Levels.Level_06
                 this.ballWalls.Add(ballWall);
                 this.Backgrounds.Add(ballWall);
             }
+
+            this.LevelReady = true;
         }
 
         public override void Destroy()
@@ -114,8 +117,9 @@ namespace ball.Gameplay.Levels.Level_06
         }
 
     }
+    #endregion
 
-
+    #region CircleWall
     public class CircleWall : GameObject
     {
 
@@ -145,7 +149,9 @@ namespace ball.Gameplay.Levels.Level_06
         }
 
     }
+    #endregion
 
+    #region CircleAndBar
     public class CircleAndBar : GameObject
     {
 
@@ -237,7 +243,9 @@ namespace ball.Gameplay.Levels.Level_06
             this.Bar.DrawSprite(spriteBatch);
         }
     }
+    #endregion
 
+    #region Bar
     public class Bar : GameObject
     {
         public GameObject Ball;
@@ -276,7 +284,9 @@ namespace ball.Gameplay.Levels.Level_06
             }
         }
     }
+    #endregion
 
+    #region Areana
     public class Arena : GameObject {
         
         GameObject _LeftBar;
@@ -348,8 +358,9 @@ namespace ball.Gameplay.Levels.Level_06
         }
         
     }
+    #endregion
 
-
+    #region BottomBar
     public class BottomBar : GameObject
     {
 
@@ -372,5 +383,6 @@ namespace ball.Gameplay.Levels.Level_06
         }
 
     }
+    #endregion
 
 }

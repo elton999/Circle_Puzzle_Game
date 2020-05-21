@@ -44,6 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Gameplay\Hud.cs" />
     <Compile Include="Gameplay\Levels\Level_01\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_02\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_03\Level.cs" />

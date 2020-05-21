@@ -13,6 +13,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace ball.Gameplay.Levels.Level_02
 {
+    #region Level
     public class Level : Stage
     {
         private int _width;
@@ -20,15 +21,22 @@ namespace ball.Gameplay.Levels.Level_02
 
         List<CirclePart> CirclePart = new List<CirclePart>();
 
-        public override void Start (ContentManager Content, World World, MouseManager mouse)
+        public override void Start (ContentManager Content, World World, MouseManager Mouse)
         {
             this.World = World;
-            this.Mouse = mouse;
+            this.Mouse = Mouse;
+            this.Content = Content;
+            
+            this.ResetLevel();
+        }
+
+        public override void ResetLevel()
+        {
             for (int i = 0; i < 4; i++)
             {
                 CirclePart.Add(new CirclePart());
-                CirclePart[i].Sprite = Content.Load<Texture2D>("Sprites/white_circle");
-                CirclePart[i]._Mouse = mouse;
+                CirclePart[i].Sprite = this.Content.Load<Texture2D>("Sprites/white_circle");
+                CirclePart[i]._Mouse = this.Mouse;
                 CirclePart[i].CreatePartOfCircle(i, World);
                 this.Players.Add(CirclePart[i]);
 
@@ -36,10 +44,10 @@ namespace ball.Gameplay.Levels.Level_02
                 this._height = CirclePart[i].height;
             }
             this.SetBackgroundColor = Color.White;
-            this.ResetLevel(Content, World, mouse);
+
             this.LevelReady = true;
             this.WhiteUI = false;
-            Console.WriteLine(LevelReady);
+            this.Finished = false;
         }
 
         public override void Destroy()
@@ -53,13 +61,7 @@ namespace ball.Gameplay.Levels.Level_02
             this.Finished = false;
             this.LevelReady = false;
         }
-
-        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
-        {
-            this.Finished = false;
-        }
-
-
+        
         public override void UpdateLevel(GameTime gameTime)
         {
             Vector2 _center = this.Screem.getCenterScreem;
@@ -84,8 +86,9 @@ namespace ball.Gameplay.Levels.Level_02
         }
 
     }
+    #endregion
 
-
+    #region CirclePart
     public class CirclePart : GameObject
     {
 
@@ -148,4 +151,5 @@ namespace ball.Gameplay.Levels.Level_02
         }
 
     }
+    #endregion
 }

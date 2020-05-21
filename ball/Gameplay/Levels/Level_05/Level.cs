@@ -13,17 +13,34 @@ using UmbrellaToolKit.UI;
 
 namespace ball.Gameplay.Levels.Level_05
 {
+    #region Level
     public class Level : Stage
     {
         public YinYang YinYang;
-        public override void Start(ContentManager Content, World World, MouseManager mouse)
+        public override void Start(ContentManager Content, World World, MouseManager Mouse)
+        {
+            this.Content = Content;
+            this.World = World;
+            this.Mouse = Mouse;
+            this.ResetLevel();
+        }
+
+        public override void ResetLevel()
         {
             this.SetBackgroundColor = Color.White;
             this.YinYang = new YinYang();
             this.YinYang.Content = Content;
             this.YinYang.Start();
             this.Players.Add(this.YinYang);
+            this.Finished = false;
             this.LevelReady = true;
+        }
+
+        public override void Destroy()
+        {
+            this.Players.Clear();
+            this.Finished = false;
+            this.LevelReady = false;
         }
 
         public override void UpdateLevel(GameTime gameTime)
@@ -39,8 +56,9 @@ namespace ball.Gameplay.Levels.Level_05
             this.Draw(spriteBatch, graphicsDevice);
         }
     }
+    #endregion
 
-
+    #region YinYang
     public class YinYang : GameObject
     {
 
@@ -141,4 +159,5 @@ namespace ball.Gameplay.Levels.Level_05
             if (!this.InitialAnimation) this.SmallCircles.DrawSprite(spriteBatch);
         }
     }
+    #endregion
 }

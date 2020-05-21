@@ -13,6 +13,7 @@ using UmbrellaToolKit.UI;
 
 namespace ball.Gameplay.Levels.Level_07
 {
+    #region Level
     public class Level : Stage
     {
 
@@ -20,17 +21,16 @@ namespace ball.Gameplay.Levels.Level_07
         List<Btn> Btns;
         int[] CorrentSequence = { 3, 9, 1, 8, 3, 1, 2, 5 };
 
-        public override void Start(ContentManager Content, World World, MouseManager mouse)
-        {
-            this.ResetLevel(Content, World, mouse);
-            this.LevelReady = true;
-        }
-
-        public override void ResetLevel(ContentManager Content, World World, MouseManager mouse)
+        public override void Start(ContentManager Content, World World, MouseManager Mouse)
         {
             this.Content = Content;
             this.World = World;
-            this.Mouse = mouse;
+            this.Mouse = Mouse;
+            this.ResetLevel();
+        }
+
+        public override void ResetLevel()
+        {
             Numbers = new List<Number>();
             Btns = new List<Btn>();
             float width = 0;
@@ -56,9 +56,9 @@ namespace ball.Gameplay.Levels.Level_07
                 this.Players.Add(this.Numbers[i]);
                 
                 Btn BtnUp = new Btn();
-                BtnUp.Content = Content;
-                BtnUp.World = World;
-                BtnUp._Mouse = mouse;
+                BtnUp.Content = this.Content;
+                BtnUp.World = this.World;
+                BtnUp._Mouse = this.Mouse;
                 BtnUp.Increment = true;
                 BtnUp.Start();
                 BtnUp.CBody.Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y - this.Numbers[i].Origin.Y);
@@ -68,9 +68,9 @@ namespace ball.Gameplay.Levels.Level_07
                 this.Players.Add(BtnUp);
 
                 Btn BtnDown = new Btn();
-                BtnDown.Content = Content;
-                BtnDown.World = World;
-                BtnDown._Mouse = mouse;
+                BtnDown.Content = this.Content;
+                BtnDown.World = this.World;
+                BtnDown._Mouse = this.Mouse;
                 BtnDown.Increment = false;
                 BtnDown.Start();
                 BtnDown.CBody.Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y + this.Numbers[i].Origin.Y);
@@ -79,10 +79,23 @@ namespace ball.Gameplay.Levels.Level_07
                 Btns.Add(BtnDown);
                 this.Players.Add(BtnDown);
             }
+
+            this.SetBackgroundColor = Color.White;
+            this.LevelReady = true;
         }
 
         public override void Destroy()
         {
+            for (int i = 0; i < this.Btns.Count(); i++)
+            {
+                this.World.Remove(this.Btns[i].CBody);
+            }
+            this.Btns.Clear();
+            
+            this.Numbers.Clear();
+            this.Players.Clear();
+            this.LevelReady = false;
+            this.Finished = false;
         }
 
         bool hasJusFinished = false;
@@ -111,7 +124,9 @@ namespace ball.Gameplay.Levels.Level_07
         }
 
     }
+    #endregion
 
+    #region Number
     public class Number : GameObject
     {
         public int Value = 0;
@@ -155,7 +170,9 @@ namespace ball.Gameplay.Levels.Level_07
             spriteBatch.DrawString(this.Font, this.Value.ToString(), this.Position, Color.Black*this.Transparent, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0);
         }
     }
+    #endregion
 
+    #region Btn
     public class Btn : GameObject {
         public Number Number;
         public ContentManager Content;
@@ -199,4 +216,5 @@ namespace ball.Gameplay.Levels.Level_07
             this.DrawSprite(spriteBatch);
         }
     }
+    #endregion
 }
