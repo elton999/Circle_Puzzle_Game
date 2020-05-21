@@ -65,6 +65,7 @@ namespace ball.Gameplay
             this.TextureSize = this._bodySize;
             this._Mouse = Mouse;
             this.SetBoxCollision(World);
+            this.CBody.Tag = "Reload";
         }
 
         bool _pressedLeftButton;
@@ -112,18 +113,21 @@ namespace ball.Gameplay
             this.TextureSize = this._bodySize;
             this._Mouse = Mouse;
             this.SetBoxCollision(World);
+            this.CBody.Tag = "Resize";
         }
 
         bool _pressedLeftButton;
         public override void Update(GameTime gameTime)
         {
-            if (this._Screem.graphics.IsFullScreen) this.Sprite = this.SpriteFull;
-            else this.Sprite = this.SpriteWindowed;
-            
+            if (this._Screem.graphics.IsFullScreen) this.Sprite = this.SpriteWindowed;
+            else this.Sprite = this.SpriteFull;
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && !this._MouseOver && !_pressedLeftButton)
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
             {
                 _pressedLeftButton = true;
+                this._Screem.graphics.IsFullScreen = !this._Screem.graphics.IsFullScreen;
+                this._Screem.graphics.ApplyChanges();
             } else if (Mouse.GetState().LeftButton == ButtonState.Released) _pressedLeftButton = false;
 
             Vector2 _position = new Vector2(this._Screem.getCurrentResolutionSize.X - this.Sprite.Width, this.Sprite.Height);
@@ -156,12 +160,13 @@ namespace ball.Gameplay
             this.TextureSize = this._bodySize;
             this._Mouse = Mouse;
             this.SetBoxCollision(World);
+            this.CBody.Tag = "Home";
         }
 
         bool _pressedLeftButton;
         public override void Update(GameTime gameTime)
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && !this._MouseOver && !_pressedLeftButton)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
             {
                 _pressedLeftButton = true;
             }
