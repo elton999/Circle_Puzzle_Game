@@ -47,6 +47,7 @@ namespace ball.Gameplay.Levels.Level_07
             }
 
             float newWidth = this.Screem.getCenterScreem.X - (width / 2f);
+
             for (int i = 0; i < 8; i++)
             {
                 if (i != 3 && i != 6) newWidth += 60 + this.Numbers[i].Origin.X;

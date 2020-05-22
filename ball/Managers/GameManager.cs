@@ -56,7 +56,7 @@ namespace ball.Managers
 
         public GameManager(ContentManager Content, ScreemController ScreemController)
         {
-            CurrentlyLevel = 1;
+            CurrentlyLevel = 7;
 
             this.Content = Content;
             this.Screem = ScreemController;
@@ -107,6 +107,7 @@ namespace ball.Managers
             this.Levels.Add(new Gameplay.Levels.Level_05.Level());
             this.Levels.Add(new Gameplay.Levels.Level_06.Level());
             this.Levels.Add(new Gameplay.Levels.Level_07.Level());
+            this.Levels.Add(new Gameplay.Levels.Level_08.Level());
         }
 
         public void StartLevel()
