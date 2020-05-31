@@ -20,30 +20,57 @@ namespace ball.Gameplay
         public Reload Reload;
         public Home Home;
         public Resize Resize;
+        public World World;
+
+        public bool ReloadShow = true;
+        public bool ResizeShow = true;
+        public bool HomeShow = true;
 
         public Stage CurrentLevel;
 
-        public void Start(ContentManager Content, World World, MouseManager Mouse, ScreemController ScreemController)
+        public void Start(ContentManager Content, MouseManager Mouse, ScreemController ScreemController)
         {
             this.Content = Content;
             this.Mouse = Mouse;
             this.Screem = ScreemController;
 
-            this.Reload = new Reload();
-            this.Reload.Start(Content, World, Mouse, ScreemController);
+            if (this.ReloadShow)
+            {
+                this.Reload = new Reload();
+                this.Reload.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Reload);
+            }
 
-            this.Resize = new Resize();
-            this.Resize.Start(Content, World, Mouse, ScreemController);
+            if (this.ResizeShow)
+            {
+                this.Resize = new Resize();
+                this.Resize.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Resize);
+            }
 
-            this.Home = new Home();
-            this.Home.Start(Content, World, Mouse, ScreemController);
-
-            this.UI.Add(this.Reload);
-            this.UI.Add(this.Resize);
-            this.UI.Add(this.Home);
-
+            if (this.HomeShow)
+            {
+                this.Home = new Home();
+                this.Home.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Home);
+            }
+            
             this.SetBackgroundColor = Color.Transparent;
             this.LevelReady = true;
+        }
+        
+        public void Destroy()
+        {
+            if (this.HomeShow) this.World.Remove(this.Home.CBody);
+            if (this.ResizeShow) this.World.Remove(this.Resize.CBody);
+            if (this.ReloadShow) this.World.Remove(this.Reload.CBody);
+
+            this.Home = null;
+            this.Resize = null;
+            this.Reload = null;
+
+            this.UI.Clear();
+            this.LevelReady = false;
         }
 
         public void SetLevel(Stage stage)

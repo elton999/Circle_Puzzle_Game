@@ -29,7 +29,7 @@ namespace ball.Managers
 
         public Stage SceneLevel;
         public Hud SceneUI;
-        public Scene SceneMainMenu;
+        public MainMenu SceneMainMenu;
         public Scene CreditsScene;
 
         private int CurrentlyLevel;
@@ -44,24 +44,28 @@ namespace ball.Managers
         public ScreemController Screem;
 
         public World World;
+        public World WorldUIMainMenu;
         
         public Texture2D MouseWhite;
         public Texture2D MouseBlack;
 
         public SpriteFont FontBold;
         public SpriteFont FontRegular;
-        
+
+        public UmbrellaToolKit.Storage.Load Storage;
+
         ContentManager Content;
         
 
-        public GameManager(ContentManager Content, ScreemController ScreemController)
+        public GameManager(ContentManager Content, ScreemController ScreemController, UmbrellaToolKit.Storage.Load Storage)
         {
-            CurrentlyLevel = 7;
+            this.Storage = Storage;
+            CurrentlyLevel = 0;
 
             this.Content = Content;
             this.Screem = ScreemController;
 
-            this.CurrentlyStatus = GameStatus.PLAY;
+            this.CurrentlyStatus = GameStatus.MAIN_MENU;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
 
@@ -75,11 +79,27 @@ namespace ball.Managers
             this.Mouse.SetPointMouse(this.World);
             this.Mouse.Show = true;
 
+            this.WorldUIMainMenu = new World();
+            this.WorldUIMainMenu.Gravity = Vector2.Zero;
+            this.Mouse.SetPointMouse(WorldUIMainMenu);
+
+            Console.WriteLine(this.WorldUIMainMenu == null);
+
             this.SceneUI = new Hud();
-            this.SceneUI.Start(this.Content, this.World, this.Mouse, this.Screem);
+            this.SceneUI.World = this.WorldUIMainMenu;
+            this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
 
             this.SetAllLevels(Content);
             this.SetCreditsScene();
+
+            this.SceneMainMenu = new MainMenu();
+            this.SceneMainMenu.Content = this.Content;
+            this.SceneMainMenu.Font = this.FontRegular;
+            this.SceneMainMenu.Screem = this.Screem;
+            this.SceneMainMenu.World = this.World;
+            this.SceneMainMenu.Mouse = this.Mouse;
+            this.SceneMainMenu.Start();
+
         }
 
         public void SetCreditsScene()
@@ -114,6 +134,7 @@ namespace ball.Managers
         {
             this.SceneLevel = this.Levels[this.CurrentlyLevel];
             this.SceneLevel.Screem = this.Screem;
+            this.SceneLevel.Storage = this.Storage;
             this.SceneLevel.FontBold = this.FontBold;
             this.SceneLevel.Start(Content, World, Mouse);
             
@@ -145,6 +166,11 @@ namespace ball.Managers
                             this.CurrentlyLevel++;
                             this.StartLevel();
                         }
+                        break;
+                    case GameStatus.MAIN_MENU:
+                        this.Mouse.Sprite = this.MouseBlack;
+                        this.SceneMainMenu.Update(gameTime);
+                        this.SceneMainMenu.Hud.Update(gameTime);
                         break;
                 }
             }
@@ -181,6 +207,10 @@ namespace ball.Managers
                     case GameStatus.PAUSE:
                         this.SceneLevel.DrawLevel(spriteBatch, graphicsDevice);
                         this.SceneUI.Draw(spriteBatch, graphicsDevice);
+                        break;
+                    case GameStatus.MAIN_MENU:
+                        this.SceneMainMenu.Draw(spriteBatch, graphicsDevice);
+                        this.SceneMainMenu.Hud.Draw(spriteBatch, graphicsDevice);
                         break;
                 }
             }

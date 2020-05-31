@@ -47,9 +47,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="-563.08582"
-     inkscape:cy="-812.241"
+     inkscape:zoom="11.313709"
+     inkscape:cx="348.43791"
+     inkscape:cy="-1475.7875"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -872,5 +872,38 @@
        inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\Level_7\Box.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.54192716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect908"
+       width="10.835156"
+       height="10.835156"
+       x="79.116791"
+       y="680.12305"
+       rx="1.8499073"
+       ry="2.4135792"
+       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\UI\menu_item.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#060606;fill-opacity:1;stroke:#000000;stroke-width:0.54192716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect908-8"
+       width="10.835156"
+       height="10.835156"
+       x="90.576553"
+       y="680.10657"
+       rx="1.8499073"
+       ry="2.413579"
+       inkscape:export-filename="D:\games_projects\ball project\ball\ball\ball\Content\Sprites\UI\menu_item_over.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#060606;fill-opacity:1;stroke:#000000;stroke-width:0.51336884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect914"
+       width="2.3970478"
+       height="2.3970478"
+       x="79.108887"
+       y="680.13037"
+       rx="0"
+       ry="2.3970478" />
   </g>
 </svg>

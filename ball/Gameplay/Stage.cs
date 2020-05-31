@@ -13,6 +13,7 @@ namespace ball.Gameplay
         public ScreemController Screem;
         public SpriteFont FontBold;
         public World World;
+        public UmbrellaToolKit.Storage.Load Storage;
         public bool WhiteUI { get; set; }
         public bool UI { get; set; }
         public bool Finished { get; set; }

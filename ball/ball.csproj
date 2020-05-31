@@ -50,9 +50,9 @@
     <Compile Include="Gameplay\Levels\Level_03\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_04\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_05\Level.cs" />
-    <Compile Include="Gameplay\Levels\Level_06\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_07\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_08\Level.cs" />
+    <Compile Include="Gameplay\Levels\Level_06\Level.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGame.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGameWhiteCircle.cs" />
     <Compile Include="Gameplay\Stage.cs" />

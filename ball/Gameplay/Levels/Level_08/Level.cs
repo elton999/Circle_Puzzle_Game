@@ -13,90 +13,107 @@ using UmbrellaToolKit.UI;
 
 namespace ball.Gameplay.Levels.Level_08
 {
+    #region Level
     public class Level : Stage
     {
-        String[] CorrentSequence = { "C", "I", "R", "C", "L", "E" };
-        List<Box> Boxs;
+
+        List<Number> Numbers;
+        List<Btn> Btns;
+        int[] CorrentSequence = { 3, 9, 1, 8, 3, 1, 2, 5 };
 
         public override void Start(ContentManager Content, World World, MouseManager Mouse)
         {
             this.Content = Content;
             this.World = World;
             this.Mouse = Mouse;
-
             this.ResetLevel();
         }
 
         public override void ResetLevel()
         {
-            Boxs = new List<Box>();
+            Numbers = new List<Number>();
+            Btns = new List<Btn>();
             float width = 0;
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
-                Box box = new Box();
-                box.World = this.World;
-                box._Mouse = this.Mouse;
-                box._Screem = this.Screem;
-                box.Content = this.Content;
-                box.Font = this.FontBold;
-                box.Id = i;
-                box.Start();
-
-                if(i != 0)width += (10 + box._bodySize.X);
-
-                this.Boxs.Add(box);
-                this.Players.Add(box);
+                Number number = new Number();
+                number.Font = this.FontBold;
+               
+                number.Start();
+                if(i != 3 && i != 6) width += (60 + number.Origin.X);
+                else width += (25 + number.Origin.X);
+                this.Numbers.Add(number);
             }
 
             float newWidth = this.Screem.getCenterScreem.X - (width / 2f);
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
-                if (i != 0)  newWidth += (10 + this.Boxs[i]._bodySize.X);
-                this.Boxs[i].CBody.Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y);
+                if (i != 3 && i != 6) newWidth += 60 + this.Numbers[i].Origin.X;
+                else newWidth += 25 + this.Numbers[i].Origin.X;
+
+                this.Numbers[i].Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y);
+                this.Players.Add(this.Numbers[i]);
+                
+                Btn BtnUp = new Btn();
+                BtnUp.Content = this.Content;
+                BtnUp.World = this.World;
+                BtnUp._Mouse = this.Mouse;
+                BtnUp.Increment = true;
+                BtnUp.Start();
+                BtnUp.CBody.Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y - this.Numbers[i].Origin.Y);
+                BtnUp.Number = this.Numbers[i];
+
+                Btns.Add(BtnUp);
+                this.Players.Add(BtnUp);
+
+                Btn BtnDown = new Btn();
+                BtnDown.Content = this.Content;
+                BtnDown.World = this.World;
+                BtnDown._Mouse = this.Mouse;
+                BtnDown.Increment = false;
+                BtnDown.Start();
+                BtnDown.CBody.Position = new Vector2(newWidth, this.Screem.getCenterScreem.Y + this.Numbers[i].Origin.Y);
+                BtnDown.Number = this.Numbers[i];
+
+                Btns.Add(BtnDown);
+                this.Players.Add(BtnDown);
             }
 
             this.SetBackgroundColor = Color.White;
             this.LevelReady = true;
-            this.Finished = false;
         }
 
         public override void Destroy()
         {
-            for (int i = 0; i < this.Boxs.Count(); i++)
+            for (int i = 0; i < this.Btns.Count(); i++)
             {
-                this.World.Remove(this.Boxs[i].CBody);
+                this.World.Remove(this.Btns[i].CBody);
             }
-            this.Boxs.Clear();
+            this.Btns.Clear();
+            
+            this.Numbers.Clear();
             this.Players.Clear();
-
             this.LevelReady = false;
             this.Finished = false;
         }
 
-        bool HaveFinished = false;
-        float _time;
+        bool hasJusFinished = false;
+        float _time = 0;
         public override void UpdateLevel(GameTime gameTime)
         {
-            HaveFinished = true;
-
-            for (int i = 0; i < this.Boxs.Count(); i++)
+            hasJusFinished = true;
+            for (int i = 0; i < this.Numbers.Count(); i++)
             {
-                if (this.Boxs[i].Letters[this.Boxs[i].Value] != this.CorrentSequence[i]) HaveFinished = false;
+                if (this.Numbers[i].Value != CorrentSequence[i]) hasJusFinished = false;
             }
 
-            if (HaveFinished)
+            if (hasJusFinished)
             {
                 _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (_time > 2f)
-                {
-                    this.Finished = true;
-                }
-                for (int i = 0; i < this.Boxs.Count(); i++)
-                {
-                    this.Boxs[i].CanChange = false;
-                }
+                if (_time > 2f) this.Finished = true;
+                for (int i = 0; i < this.Numbers.Count(); i++) this.Numbers[i].CanChangeValue = false;
             }
 
             this.Update(gameTime);
@@ -108,67 +125,97 @@ namespace ball.Gameplay.Levels.Level_08
         }
 
     }
+    #endregion
 
-    public class Box : GameObject
+    #region Number
+    public class Number : GameObject
     {
-        public ContentManager Content;
-        public String[] Letters = { "A", "I", "C", "L", "O", "E", "R" };
         public int Value = 0;
-        public int Id;
         public SpriteFont Font;
-        public Vector2 FontPosition;
-        public Vector2 FontOrigin;
-
+        public bool CanChangeValue = true;
+        
         public void Start()
         {
-            this.Sprite = this.Content.Load<Texture2D>("Sprites/Level_8/Box");
-            this._bodySize = new Vector2(this.Sprite.Width, this.Sprite.Height);
-            this.SetBoxCollision(this.World);
-            this.Origin = this._bodySize / 2f;
-            this.CBody.Tag = "box_"+this.Id.ToString();
             this.MeasureString();
         }
 
-        public bool CanChange = true;
 
         public void MeasureString()
         {
-            Vector2 size = Font.MeasureString(this.Letters[this.Value]);
-            this.FontOrigin = new Vector2(size.X / 2f, size.Y / 2f);
+            Vector2 size = Font.MeasureString(this.Value.ToString());
+            this.Origin = new Vector2(size.X / 2f, size.Y / 2f);
         }
 
-        public void Change()
+        public void Increment()
         {
-            if (Letters.Length > this.Value) this.Value++;
-            else this.Value = 0;
-            this.MeasureString();
-        }
-
-        bool _pressed = false;
-        public override void Update(GameTime gameTime)
-        {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && !_pressed && this._mouseOver && CanChange)
+            if (CanChangeValue)
             {
-                this._pressed = true;
-                this.Change();
+                if (this.Value < 9) this.Value += 1;
+                else this.Value = 0;
+                this.MeasureString();
             }
-            else if (Mouse.GetState().LeftButton == ButtonState.Released) this._pressed = false;
-
-            this.FontPosition = this.CBody.Position;
-
-            this._mouseOver = false;
         }
 
-        bool _mouseOver;
-        public override void OnMouseOver()
+        public void Decrement()
         {
-            this._mouseOver = true;
+            if (CanChangeValue)
+            {
+                if (this.Value > 0) this.Value -= 1;
+                else this.Value = 9;
+                this.MeasureString();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this.DrawSprite(spriteBatch);
-            spriteBatch.DrawString(this.Font, this.Letters[this.Value], this.FontPosition, Color.Black, 0f, this.FontOrigin, this.Scale, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(this.Font, this.Value.ToString(), this.Position, Color.Black*this.Transparent, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0);
         }
     }
+    #endregion
+
+    #region Btn
+    public class Btn : GameObject {
+        public Number Number;
+        public ContentManager Content;
+        public bool Increment;
+
+        public void Start()
+        {
+            if (this.Increment) this.Sprite = Content.Load<Texture2D>("Sprites/Up");
+            else this.Sprite = Content.Load<Texture2D>("Sprites/Down");
+
+            this._bodySize = new Vector2(this.Sprite.Height, this.Sprite.Width);
+            this.TextureSize = this._bodySize;
+
+            this.SetBoxCollision(this.World);
+        }
+
+        private bool _pressed = false;
+        public override void Update(GameTime gameTime)
+        {
+            if (_isMouseOver && Mouse.GetState().LeftButton == ButtonState.Pressed && !this._pressed)
+            {
+                this._pressed = true;
+                if (this.Increment) this.Number.Increment();
+                else this.Number.Decrement();
+            }
+
+            if (Mouse.GetState().LeftButton == ButtonState.Released) this._pressed = false;
+
+            this._isMouseOver = false;
+        }
+
+        private bool _isMouseOver;
+        public override void OnMouseOver()
+        {
+            this._isMouseOver = true;
+        }
+
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            this.DrawSprite(spriteBatch);
+        }
+    }
+    #endregion
 }

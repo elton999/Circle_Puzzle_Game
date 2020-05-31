@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
+using UmbrellaToolKit.Storage;
 
 namespace ball
 {
@@ -10,6 +12,7 @@ namespace ball
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        UmbrellaToolKit.Storage.Load Storage;
 
         private BasicEffect _spriteBatchEffect;
 
@@ -18,6 +21,7 @@ namespace ball
             graphics = new GraphicsDeviceManager(this);
             Window.AllowUserResizing = true;
             Content.RootDirectory = "Content";
+            Storage = new Load();
         }
         
         protected override void Initialize()
@@ -33,7 +37,7 @@ namespace ball
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ScreemController = new ScreemController(graphics, graphics.GraphicsDevice.Adapter, GraphicsDevice, 0);
 
-            GameManager = new Managers.GameManager(Content, ScreemController);
+            GameManager = new Managers.GameManager(Content, ScreemController, Storage);
             GameManager.Screem = ScreemController;
             
             _spriteBatchEffect = new BasicEffect(graphics.GraphicsDevice);
