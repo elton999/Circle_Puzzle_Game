@@ -83,8 +83,6 @@ namespace ball.Managers
             this.WorldUIMainMenu.Gravity = Vector2.Zero;
             this.Mouse.SetPointMouse(WorldUIMainMenu);
 
-            Console.WriteLine(this.WorldUIMainMenu == null);
-
             this.SceneUI = new Hud();
             this.SceneUI.World = this.WorldUIMainMenu;
             this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
