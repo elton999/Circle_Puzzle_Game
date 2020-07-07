@@ -22,7 +22,7 @@ namespace ball.Gameplay.MemoryGame
             this.SetCircleCollision(world);
             this.CBody.Tag = "Circle_level_3";
             this.CBody.IgnoreGravity = true;
-            this.CBody.BodyType = BodyType.Dynamic;
+            this.CBody.BodyType = BodyType.Static;
             this.TextureSize = new Vector2(this.Sprite.Width, this.Sprite.Height);
 
             // set black circle
@@ -111,7 +111,6 @@ namespace ball.Gameplay.MemoryGame
                     this.BlackCircle.Scale = 1;
 
                     this.SeparationAnimationUpdade();
-
                     
 
                     _positionAfterExposionFrame--;
