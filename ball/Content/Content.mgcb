@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\..\..\bin\Debug\Windows.MG\Aether.Content.Pipeline.Physics2DImporters.dll
+/reference:..\..\..\..\..\umbrella\UmbrellaToolKit.Pipeline\MonoGame.ContentPipeline.UmbrellaToolKit\MonoGame.ContentPipeline.UmbrellaToolKit\bin\Debug\MonoGame.ContentPipeline.UmbrellaToolKit.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -27,6 +27,11 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Quicksand-Regular.spritefont
+
+#begin Languages.UmbrellaLocation
+/importer:LocalizationImporter
+/processor:LocalizationProcessor
+/build:Languages.UmbrellaLocation
 
 #begin Sprites/black_circle.png
 /importer:TextureImporter

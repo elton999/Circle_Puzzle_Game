@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
 using UmbrellaToolKit.Storage;
+using UmbrellaToolKit.Localization;
 
 namespace ball
 {
@@ -13,6 +14,7 @@ namespace ball
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         UmbrellaToolKit.Storage.Load Storage;
+        LocalizationDefinitions Location;
 
         private BasicEffect _spriteBatchEffect;
 
@@ -42,6 +44,8 @@ namespace ball
             
             _spriteBatchEffect = new BasicEffect(graphics.GraphicsDevice);
             _spriteBatchEffect.TextureEnabled = true;
+
+            Location = Content.Load<LocalizationDefinitions>("Languages");
             
         }
         

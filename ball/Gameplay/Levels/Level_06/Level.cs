@@ -139,7 +139,7 @@ namespace ball.Gameplay.Levels.Level_06
 
         public void Change()
         {
-            if (Letters.Length > this.Value) this.Value++;
+            if (Letters.Length > this.Value + 1) this.Value++;
             else this.Value = 0;
             this.MeasureString();
         }

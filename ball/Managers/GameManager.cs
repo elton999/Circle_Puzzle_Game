@@ -60,12 +60,12 @@ namespace ball.Managers
         public GameManager(ContentManager Content, ScreemController ScreemController, UmbrellaToolKit.Storage.Load Storage)
         {
             this.Storage = Storage;
-            CurrentlyLevel = 0;
+            CurrentlyLevel = 5;
 
             this.Content = Content;
             this.Screem = ScreemController;
 
-            this.CurrentlyStatus = GameStatus.MAIN_MENU;
+            this.CurrentlyStatus = GameStatus.PLAY;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
 

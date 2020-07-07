@@ -1,0 +1,21 @@
+<localization>
+  <Languages type="string">
+    <item>English</item>
+    <item>Portugues</item>
+  </Languages>
+  <Tags type="string">
+    <item>UI_MAIN_MENU_PLAY</item>
+    <item>UI_MAIN_MENU_SETTINGS</item>
+    <item>UI_MAIN_MENU_QUIT</item>
+  </Tags>
+  <English type="string">
+    <item>play</item>
+    <item>settings</item>
+    <item>quit</item>
+  </English>
+  <Portugues type="string">
+    <item>jogar</item>
+    <item>configurações</item>
+    <item>sair</item>
+  </Portugues>
+</localization>

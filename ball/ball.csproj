@@ -77,7 +77,9 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </MonoGameContentReference>
     <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
       <Link>x86\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -126,9 +128,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Content.Pipeline\Physics2DImporters\Physics2DImporters.WINDOWS.MG.csproj">
-      <Project>{14b7bd4a-bd70-4564-bd11-8f0036ba20e7}</Project>
-      <Name>Physics2DImporters.WINDOWS.MG</Name>
+    <ProjectReference Include="..\..\..\..\umbrella\UmbrellaToolKit.Pipeline\MonoGame.ContentPipeline.UmbrellaToolKit\MonoGame.ContentPipeline.UmbrellaToolKit\MonoGame.ContentPipeline.UmbrellaToolKit.csproj">
+      <Project>{d969e70e-db99-4921-81ba-6b3df4402b19}</Project>
+      <Name>MonoGame.ContentPipeline.UmbrellaToolKit</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\umbrella\UmbrellaToolKit\UmbrellaToolKit.csproj">
       <Project>{3913e39e-2e0e-4ec9-b02d-c46ca6c105ff}</Project>
