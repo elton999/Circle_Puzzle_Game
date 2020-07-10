@@ -141,6 +141,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Level_8/Box.png
 
+#begin Sprites/Level_9/grid.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Level_9/grid.png
+
 #begin Sprites/UI/home.png
 /importer:TextureImporter
 /processor:TextureProcessor
