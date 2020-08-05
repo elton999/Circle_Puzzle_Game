@@ -7,13 +7,15 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{098C135F-1439-4152-A957-1FDA40E7466C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ball</RootNamespace>
     <AssemblyName>Circle</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -56,6 +58,7 @@
     <Compile Include="Gameplay\Levels\Level_07\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_08\Level.cs" />
     <Compile Include="Gameplay\Levels\Level_06\Level.cs" />
+    <Compile Include="Gameplay\Levels\Level_09\Level.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGame.cs" />
     <Compile Include="Gameplay\MemoryGame\MemoryGameWhiteCircle.cs" />
     <Compile Include="Gameplay\Stage.cs" />
@@ -141,7 +144,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\Levels\Level_09\" />
     <Folder Include="Gameplay\Levels\Level_10\" />
   </ItemGroup>
   <ItemGroup>

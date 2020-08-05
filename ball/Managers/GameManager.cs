@@ -60,7 +60,7 @@ namespace ball.Managers
         public GameManager(ContentManager Content, ScreemController ScreemController, UmbrellaToolKit.Storage.Load Storage)
         {
             this.Storage = Storage;
-            CurrentlyLevel = 3;
+            CurrentlyLevel = 0;
 
             this.Content = Content;
             this.Screem = ScreemController;
@@ -96,7 +96,7 @@ namespace ball.Managers
             this.SceneMainMenu.Screem = this.Screem;
             this.SceneMainMenu.World = this.World;
             this.SceneMainMenu.Mouse = this.Mouse;
-            this.SceneMainMenu.Start();
+            //this.SceneMainMenu.Start();
 
         }
 
