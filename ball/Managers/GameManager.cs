@@ -68,8 +68,7 @@ namespace ball.Managers
             this.Content = Content;
             this.Screem = ScreemController;
             this.Game = Game;
-
-            this.CurrentlyStatus = GameStatus.MAIN_MENU;
+            
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
             this.Localization = Content.Load<LocalizationDefinitions>("Languages");
@@ -102,7 +101,16 @@ namespace ball.Managers
             this.SceneMainMenu.Game = this.Game;
             this.SceneMainMenu.Localization = this.Localization;
             this.SceneMainMenu.Storage = this.Storage;
-            this.SceneMainMenu.Start();
+
+            List<bool> levels = this.Storage.getItemsBool("Progress");
+            IEnumerable<bool> _levels_progress = from level in levels where level == true select level;
+            if (_levels_progress.ToList<bool>().Count == 0)
+                this.CurrentlyStatus = GameStatus.PLAY;
+            else
+            {
+                this.SceneMainMenu.Start();
+                this.CurrentlyStatus = GameStatus.MAIN_MENU;
+            }
 
         }
 
@@ -148,6 +156,16 @@ namespace ball.Managers
             this.SceneLevel.Start(Content, World, Mouse);
             
             this.SceneUI.SetLevel(this.SceneLevel);
+
+            this.SaveProgress(this.CurrentlyLevel);
+        }
+
+        public void SaveProgress(int _level)
+        {
+            List<bool> _levels = this.Storage.getItemsBool("Progress");
+            _levels[_level] = true;
+            this.Storage.AddItemBool("Progress", _levels);
+            this.Storage.Save();
         }
 
         public void Update(GameTime gameTime)

@@ -70,10 +70,10 @@ namespace ball
 
         public void CheckFirstSettings()
         {
-            List<string> levels = this.Storage.getItemsString("Progress");
+            List<bool> levels = this.Storage.getItemsBool("Progress");
             if (levels.Count == 0)
-                for(int i = 0; i < 8; i++) levels.Add("False");
-                this.Storage.AddItemString("Progress", levels);
+                for(int i = 0; i < 8; i++) levels.Add(false);
+                this.Storage.AddItemBool("Progress", levels);
 
             if (this.Storage.getItemsString("Language").Count == 0)
             {

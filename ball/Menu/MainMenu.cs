@@ -53,7 +53,7 @@ namespace ball.Menu
         public override void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
             base.Draw(spriteBatch, graphicsDevice);
-            if (this.Hud != null && this.LevelReady)  this.Hud.Draw(spriteBatch, graphicsDevice);
+            if (this.Hud != null && this.LevelReady) this.Hud.Draw(spriteBatch, graphicsDevice);
         }
         
         public void CreateMenu()
@@ -110,7 +110,7 @@ namespace ball.Menu
             this.Hud.Back = backHudBtn;
             this.Hud.Start(this.Content, this.Mouse, this.Screem);
 
-            List<string> levels = this.Storage.getItemsString("Progress");
+            List<bool> levels = this.Storage.getItemsBool("Progress");
 
             for (int i = 0; i < 8; i++)
             {
@@ -121,7 +121,7 @@ namespace ball.Menu
                 MenuItemLevel.Font = this.Font;
                 MenuItemLevel._Mouse = this.Mouse;
                 MenuItemLevel.World = this.World;
-                MenuItemLevel.Unlock = bool.Parse(levels[i]);
+                MenuItemLevel.Unlock = levels[i];
                 MenuItemLevel.Show = true;
 
                 float xCenter = this.Screem.getCenterScreem.X - ((5 * 130 / 2f));
