@@ -20,11 +20,13 @@ namespace ball.Gameplay
         public Reload Reload;
         public Home Home;
         public Resize Resize;
+        public BackBTN Back;
         public World World;
 
         public bool ReloadShow = true;
         public bool ResizeShow = true;
         public bool HomeShow = true;
+        public bool BackShow = false;
 
         public Stage CurrentLevel;
 
@@ -41,7 +43,7 @@ namespace ball.Gameplay
                 this.UI.Add(this.Reload);
             }
 
-            if (this.ResizeShow)
+            if (this.ResizeShow && this.Resize == null)
             {
                 this.Resize = new Resize();
                 this.Resize.Start(Content, World, Mouse, ScreemController);
@@ -54,6 +56,13 @@ namespace ball.Gameplay
                 this.Home.Start(Content, World, Mouse, ScreemController);
                 this.UI.Add(this.Home);
             }
+
+            if (this.BackShow)
+            {
+                if(this.Back == null) this.Back = new BackBTN();
+                this.Back.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Back);
+            }
             
             this.SetBackgroundColor = Color.Transparent;
             this.LevelReady = true;
@@ -61,16 +70,18 @@ namespace ball.Gameplay
         
         public void Destroy()
         {
-            if (this.HomeShow) this.World.Remove(this.Home.CBody);
-            if (this.ResizeShow) this.World.Remove(this.Resize.CBody);
-            if (this.ReloadShow) this.World.Remove(this.Reload.CBody);
+            this.LevelReady = false;
+            if (this.Home.CBody != null) this.Home.CBody.World.Remove(this.Home.CBody);
+            if (this.Resize.CBody != null) this.Resize.CBody.World.Remove(this.Resize.CBody);
+            if (this.Reload.CBody != null) this.Reload.CBody.World.Remove(this.Reload.CBody);
+            if (this.Back.CBody != null) this.Back.CBody.World.Remove(this.Back.CBody);
 
             this.Home = null;
             this.Resize = null;
             this.Reload = null;
+            this.Back = null;
 
-            this.UI.Clear();
-            this.LevelReady = false;
+            this.UI = new List<GameObject>();
         }
 
         public void SetLevel(Stage stage)
@@ -79,6 +90,52 @@ namespace ball.Gameplay
             this.Reload.CurrentLevel = stage;
         }
     }
+
+    #region Back
+    public class BackBTN : GameObject
+    {
+        public void Start(ContentManager Content, World World, MouseManager Mouse, ScreemController ScreemController)
+        {
+            this._Screem = ScreemController;
+            this.Sprite = Content.Load<Texture2D>("Sprites/UI/arrowLeft");
+            this._bodySize = new Vector2(this.Sprite.Height, this.Sprite.Width);
+            this.TextureSize = this._bodySize;
+            this._Mouse = Mouse;
+            this.SetBoxCollision(World);
+            this.CBody.Tag = "Back";
+        }
+
+        bool _pressedLeftButton;
+        public override void Update(GameTime gameTime)
+        {
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
+            {
+                _pressedLeftButton = true;
+                this.Click();
+            }
+            else if (Mouse.GetState().LeftButton == ButtonState.Released) _pressedLeftButton = false;
+
+            Vector2 _position = new Vector2(this.Sprite.Width, this.Sprite.Height);
+            if(!_pressedLeftButton)this.CBody.SetTransform(ref _position, this.CBody.Rotation);
+            
+            this._MouseOver = false;
+        }
+
+        public virtual void Click() { }
+
+        bool _MouseOver;
+        public override void OnMouseOver()
+        {
+            this._MouseOver = true;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            this.DrawSprite(spriteBatch);
+        }
+    }
+
+    #endregion
 
     #region Reload
     public class Reload : GameObject
@@ -141,6 +198,7 @@ namespace ball.Gameplay
             this._Mouse = Mouse;
             this.SetBoxCollision(World);
             this.CBody.Tag = "Resize";
+            this.CBody.BodyType = BodyType.Static;
         }
 
         bool _pressedLeftButton;

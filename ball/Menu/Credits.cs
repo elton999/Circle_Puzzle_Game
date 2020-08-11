@@ -32,7 +32,7 @@ namespace ball.Menu
         public void SetSizes()
         {
             this.TitleSize = this.FontBold.MeasureString("Circle");
-            this.AddicionalCredits.Add(this.FontRegular.MeasureString("a game by Elton Silva"));
+            this.AddicionalCredits.Add(this.FontRegular.MeasureString("a Elton Silva game"));
             this.AddicionalCreditsPosition.Add(Vector2.One);
         }
 
@@ -69,7 +69,7 @@ namespace ball.Menu
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(this.FontBold, "Circle", this.Position, this.SpriteColor * this.Transparent);
-            spriteBatch.DrawString(this.FontRegular, "a game by Elton Silva", this.AddicionalCreditsPosition[0], this.SpriteColor * this.AddicionalCreditsTransparence);
+            spriteBatch.DrawString(this.FontRegular, "a Elton Silva game", this.AddicionalCreditsPosition[0], this.SpriteColor * this.AddicionalCreditsTransparence);
         }
     }
 }

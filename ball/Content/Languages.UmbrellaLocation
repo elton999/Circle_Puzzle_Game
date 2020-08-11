@@ -6,16 +6,31 @@
   <Tags type="string">
     <item>UI_MAIN_MENU_PLAY</item>
     <item>UI_MAIN_MENU_SETTINGS</item>
+    <item>UI_MAIN_MENU_CREDITS</item>
     <item>UI_MAIN_MENU_QUIT</item>
+    <item>CREDITS_UI_PRODUCTED_BY</item>
+    <item>CREDITS_UI_SPECIAL_THANKS</item>
+    <item>CREDITS_UI_MUSIC</item>
+    <item>CREDITS_UI_THANKS</item>
   </Tags>
   <English type="string">
     <item>play</item>
     <item>settings</item>
+    <item>credits</item>
     <item>quit</item>
+    <item>produced by</item>
+    <item>special thanks</item>
+    <item>music</item>
+    <item>Thanks for playing :)</item>
   </English>
   <Portugues type="string">
     <item>jogar</item>
     <item>configurações</item>
+    <item>créditos</item>
     <item>sair</item>
+    <item>produzido por</item>
+    <item>Agredecimentos</item>
+    <item>música</item>
+    <item>Obirgado por jogar :)</item>
   </Portugues>
 </localization>

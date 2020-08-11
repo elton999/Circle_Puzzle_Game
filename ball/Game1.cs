@@ -39,7 +39,10 @@ namespace ball
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ScreemController = new ScreemController(graphics, graphics.GraphicsDevice.Adapter, GraphicsDevice, 0);
 
-            GameManager = new Managers.GameManager(Content, ScreemController, Storage);
+            // check game progress
+            this.CheckFirstSettings();
+
+            GameManager = new Managers.GameManager(Content, ScreemController, Storage, this);
             GameManager.Screem = ScreemController;
             
             _spriteBatchEffect = new BasicEffect(graphics.GraphicsDevice);
@@ -56,13 +59,30 @@ namespace ball
         
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                //Exit();
 
             this.GameManager.Update(gameTime);
             this.ScreemController.Update(gameTime);
             
             base.Update(gameTime);
+        }
+
+        public void CheckFirstSettings()
+        {
+            List<string> levels = this.Storage.getItemsString("Progress");
+            if (levels.Count == 0)
+                for(int i = 0; i < 8; i++) levels.Add("False");
+                this.Storage.AddItemString("Progress", levels);
+
+            if (this.Storage.getItemsString("Language").Count == 0)
+            {
+                List<string> language = new List<string>();
+                language.Add("English");
+                this.Storage.AddItemString("Language", language);
+            }
+
+            this.Storage.Save();
         }
 
         protected override void Draw(GameTime gameTime)

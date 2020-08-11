@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
+using UmbrellaToolKit.Localization;
 using tainicom.Aether.Physics2D.Dynamics;
 using ball.Menu;
 using ball.Gameplay;
@@ -55,19 +56,23 @@ namespace ball.Managers
         public UmbrellaToolKit.Storage.Load Storage;
 
         ContentManager Content;
+        LocalizationDefinitions Localization;
+        Game1 Game;
         
 
-        public GameManager(ContentManager Content, ScreemController ScreemController, UmbrellaToolKit.Storage.Load Storage)
+        public GameManager(ContentManager Content, ScreemController ScreemController, UmbrellaToolKit.Storage.Load Storage, Game1 Game)
         {
             this.Storage = Storage;
             CurrentlyLevel = 0;
 
             this.Content = Content;
             this.Screem = ScreemController;
+            this.Game = Game;
 
-            this.CurrentlyStatus = GameStatus.PLAY;
+            this.CurrentlyStatus = GameStatus.MAIN_MENU;
             this.FontBold = Content.Load<SpriteFont>("Fonts/Quicksand-Bold");
             this.FontRegular = Content.Load<SpriteFont>("Fonts/Quicksand-Regular");
+            this.Localization = Content.Load<LocalizationDefinitions>("Languages");
 
             this.World = new World();
             this.World.Gravity = new Vector2(0, 10);
@@ -82,21 +87,22 @@ namespace ball.Managers
             this.WorldUIMainMenu = new World();
             this.WorldUIMainMenu.Gravity = Vector2.Zero;
             this.Mouse.SetPointMouse(WorldUIMainMenu);
-
-            this.SceneUI = new Hud();
-            this.SceneUI.World = this.WorldUIMainMenu;
-            this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
-
+            
             this.SetAllLevels(Content);
             this.SetCreditsScene();
 
             this.SceneMainMenu = new MainMenu();
             this.SceneMainMenu.Content = this.Content;
             this.SceneMainMenu.Font = this.FontRegular;
+            this.SceneMainMenu.FontBold = this.FontBold;
             this.SceneMainMenu.Screem = this.Screem;
             this.SceneMainMenu.World = this.World;
             this.SceneMainMenu.Mouse = this.Mouse;
-            //this.SceneMainMenu.Start();
+            this.SceneMainMenu.Screem = this.Screem;
+            this.SceneMainMenu.Game = this.Game;
+            this.SceneMainMenu.Localization = this.Localization;
+            this.SceneMainMenu.Storage = this.Storage;
+            this.SceneMainMenu.Start();
 
         }
 
@@ -130,6 +136,11 @@ namespace ball.Managers
 
         public void StartLevel()
         {
+            if (this.SceneUI == null) {
+                this.SceneUI = new Hud();
+                this.SceneUI.World = this.WorldUIMainMenu;
+                this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
+            }
             this.SceneLevel = this.Levels[this.CurrentlyLevel];
             this.SceneLevel.Screem = this.Screem;
             this.SceneLevel.Storage = this.Storage;
@@ -142,15 +153,14 @@ namespace ball.Managers
         public void Update(GameTime gameTime)
         {
             for(int i = 0; i < 4; i++) this.World.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds, (1f / 30f)));
-
-            if (this.Levels[this.CurrentlyLevel].LevelReady == false) this.StartLevel();
-
+            
             if (!this._IntialCredits)
             {
                 this.Mouse.Show = true;
                 switch (this.CurrentlyStatus)
                 {
                     case GameStatus.PLAY:
+                        if (this.Levels[this.CurrentlyLevel].LevelReady == false) this.StartLevel();
                         this.SceneLevel.UpdateLevel(gameTime);
                         this.SceneUI.Update(gameTime);
                         //change Color Mouse
@@ -168,7 +178,6 @@ namespace ball.Managers
                     case GameStatus.MAIN_MENU:
                         this.Mouse.Sprite = this.MouseBlack;
                         this.SceneMainMenu.Update(gameTime);
-                        this.SceneMainMenu.Hud.Update(gameTime);
                         break;
                 }
             }
@@ -208,7 +217,6 @@ namespace ball.Managers
                         break;
                     case GameStatus.MAIN_MENU:
                         this.SceneMainMenu.Draw(spriteBatch, graphicsDevice);
-                        this.SceneMainMenu.Hud.Draw(spriteBatch, graphicsDevice);
                         break;
                 }
             }
