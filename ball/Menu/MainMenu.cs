@@ -32,6 +32,8 @@ namespace ball.Menu
         public Game1 Game;
         public LocalizationDefinitions Localization;
 
+        public Managers.GameManager GameManager;
+
         public Hud Hud;
         public Title TitleMainMenu;
         public CreditsArea CreditsArea;
@@ -124,6 +126,7 @@ namespace ball.Menu
                 MenuItemLevel._Mouse = this.Mouse;
                 MenuItemLevel.World = this.World;
                 MenuItemLevel.Unlock = levels[i];
+                MenuItemLevel.GameManager = this.GameManager;
                 MenuItemLevel.Show = true;
 
                 float xCenter = this.Screem.getCenterScreem.X - ((5 * 130 / 2f));
@@ -543,6 +546,7 @@ namespace ball.Menu
         public MainMenu MainMenu;
         public ContentManager Content;
         public bool Unlock;
+        public Managers.GameManager GameManager;
         private MenuItemLevelBox MenuItemBox;
 
         public void Start()
@@ -580,7 +584,13 @@ namespace ball.Menu
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed && !_click)
                     {
                         this._click = true;
-                        MainMenu.ItemOver = (MainMenu.MenuItens)this.Id;
+                        if (this.Unlock)
+                        {
+                            this.MainMenu.DestroySelectLevel();
+                            this.GameManager.CurrentlyLevel = this.Id;
+                            this.GameManager.StartLevel();
+                            this.GameManager.CurrentlyStatus = Managers.GameManager.GameStatus.PLAY;
+                        }
                     }
                     else if (Mouse.GetState().LeftButton == ButtonState.Released && _click)
                     {

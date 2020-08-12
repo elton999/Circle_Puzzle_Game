@@ -33,7 +33,7 @@ namespace ball.Managers
         public MainMenu SceneMainMenu;
         public Scene CreditsScene;
 
-        private int CurrentlyLevel;
+        public int CurrentlyLevel;
 
         private bool _IntialCredits;
         public Credits Credits;
@@ -101,6 +101,7 @@ namespace ball.Managers
             this.SceneMainMenu.Game = this.Game;
             this.SceneMainMenu.Localization = this.Localization;
             this.SceneMainMenu.Storage = this.Storage;
+            this.SceneMainMenu.GameManager = this;
 
             List<bool> levels = this.Storage.getItemsBool("Progress");
             IEnumerable<bool> _levels_progress = from level in levels where level == true select level;
