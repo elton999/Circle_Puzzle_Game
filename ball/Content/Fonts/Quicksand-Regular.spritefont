@@ -53,8 +53,19 @@ with.
     <CharacterRegions>
       <CharacterRegion>
         <Start>&#32;</Start>
-        <End>&#126;</End>
+        <End>&#512;</End>
       </CharacterRegion>
+      <CharacterRegion>
+        <!-- Apostrophe 8217 -->
+        <Start>&#8216;</Start>
+        <End>&#8222;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <!-- Currency symbols -->
+        <Start>&#8352;</Start>
+        <End>&#8378;</End>
+      </CharacterRegion>
+        
     </CharacterRegions>
   </Asset>
 </XnaContent>

@@ -181,8 +181,8 @@ namespace ball.Gameplay.Levels.Level_08
 
         public void Start()
         {
-            if (this.Increment) this.Sprite = Content.Load<Texture2D>("Sprites/Up");
-            else this.Sprite = Content.Load<Texture2D>("Sprites/Down");
+            if (this.Increment) this.Sprite = Content.Load<Texture2D>("Sprites/up");
+            else this.Sprite = Content.Load<Texture2D>("Sprites/down");
 
             this._bodySize = new Vector2(this.Sprite.Height, this.Sprite.Width);
             this.TextureSize = this._bodySize;

@@ -35,6 +35,7 @@ namespace ball.Menu
         public Hud Hud;
         public Title TitleMainMenu;
         public CreditsArea CreditsArea;
+        public SelectLanguage SelectLanguage;
 
         public void Start()
         {
@@ -111,6 +112,7 @@ namespace ball.Menu
             this.Hud.Start(this.Content, this.Mouse, this.Screem);
 
             List<bool> levels = this.Storage.getItemsBool("Progress");
+            this.LevelsSelect = new List<MenuItemLevel>();
 
             for (int i = 0; i < 8; i++)
             {
@@ -162,9 +164,41 @@ namespace ball.Menu
             this.UI.Add(this.CreditsArea);
         }
 
+        public void CreateLanguageSelect()
+        {
+            this.DestroyMenu();
+
+            this.Hud.ReloadShow = false;
+            this.Hud.HomeShow = false;
+            this.Hud.BackShow = true;
+            this.Hud.ResizeShow = true;
+            BackHudBtn backHudBtn = new BackHudBtn();
+            backHudBtn.mainMenu = this;
+            this.Hud.Back = backHudBtn;
+            this.Hud.Start(this.Content, this.Mouse, this.Screem);
+            backHudBtn.CBody.Tag = "back";
+
+            this.SelectLanguage = new SelectLanguage();
+            this.SelectLanguage._Screem = this.Screem;
+            this.SelectLanguage.World = this.World;
+            this.SelectLanguage.Font = this.Font;
+            this.SelectLanguage.Content = this.Content;
+            this.SelectLanguage.Storage = this.Storage;
+            this.SelectLanguage._Mouse = this.Mouse;
+            this.SelectLanguage.MainMenu = this;
+            this.SelectLanguage.Start();
+
+            this.UI.Add(this.SelectLanguage);
+        }
+
+        
         public void Restart()
         {
-            this.CreateMenu();
+            if (this.CheckLanguage())
+                this.CreateMenu();
+            else
+                this.CreateLanguageSelect();
+
             this.SetBackgroundColor = Color.White;
             this.LevelReady = true;
         }
@@ -177,6 +211,7 @@ namespace ball.Menu
                 {
                     this.Hud.Back.RemoveFromScene = true;
                     this.Hud.Back = null;
+                    this.Hud.BackShow = false;
                 }
             }
         }
@@ -188,14 +223,34 @@ namespace ball.Menu
                 gameObject.RemoveFromScene = true;
 
             this.MenuItems.Clear();
-            this.LevelsSelect.Clear();
+        }
+
+        public void DestroyLanguageSelect()
+        {
+            if (this.SelectLanguage != null)
+            {
+                this.DestroyHud();
+                foreach (GameObject gameObject in this.UI)
+                    gameObject.RemoveFromScene = true;
+                this.SelectLanguage = null;
+            }
+        }
+
+        public void DestroySelectLevel() {
+            if (this.LevelsSelect.Count > 0)
+            {
+                this.DestroyHud();
+                foreach (GameObject gameObject in this.UI)
+                    gameObject.RemoveFromScene = true;
+                this.LevelsSelect.Clear();
+            }
         }
 
         public void DestroyAreas()
         {
-            this.DestroyHud();
             if (this.CreditsArea != null)
             {
+                this.DestroyHud();
                 this.CreditsArea.RemoveFromScene = true;
                 this.CreditsArea = null;
             }
@@ -208,6 +263,20 @@ namespace ball.Menu
 
             this.LevelReady = false;
         }
+
+        public bool CheckLanguage()
+        {
+            List<string> _lang = this.Storage.getItemsString("Language");
+            if (_lang.Count == 0)
+                _lang.Add("English");
+            this.Storage.AddItemString("Language", _lang);
+            this.Storage.Save();
+
+            if (_lang.Count == 0)
+                return false;
+
+            return true;
+        }
     }
 
     public class BackHudBtn : BackBTN
@@ -216,6 +285,8 @@ namespace ball.Menu
         public override void Click()
         {
             this.mainMenu.DestroyAreas();
+            this.mainMenu.DestroyLanguageSelect();
+            this.mainMenu.DestroySelectLevel();
             this.mainMenu.CreateMenu();
         }
     }
@@ -235,13 +306,13 @@ namespace ball.Menu
             this.SpriteColor = Color.Black;
             this.Origin = this.Font.MeasureString(this.Value) / 2f;
             this.MenuItemBox = new MenuItemBox();
-            this.MenuItemBox.Position = new Vector2(this.Position.X - 80, this.Position.Y - 20);
-            this.MenuItemBox.ContentSize = new Vector2(140, 20);
+            this.MenuItemBox.Position = new Vector2(this.Position.X - 105, this.Position.Y - 20);
+            this.MenuItemBox.ContentSize = new Vector2(190, 20);
             this.MenuItemBox.Content = this.Content;
             this.MenuItemBox.Start();
-            this._bodySize = new Vector2(160, 40);
+            this._bodySize = new Vector2(210, 40);
             this.SetBoxCollision(this.World);
-            this.CBody.SetTransform(new Vector2(this.Position.X  - 10, this.Position.Y - 15), this.Rotation);
+            this.CBody.SetTransform(new Vector2(this.Position.X -10, this.Position.Y - 15), this.Rotation);
             this.CBody.Tag = "Menu_Item_"+this.Id;
         }
 
@@ -266,6 +337,9 @@ namespace ball.Menu
                             case 0:
                                 this.MainMenu.CreateSelectLevels();
                                 this.MainMenu.TitleMainMenu.Show = false;
+                                break;
+                            case 1:
+                                this.MainMenu.CreateLanguageSelect();
                                 break;
                             case 2:
                                 this.MainMenu.CreateCreditsArea();
@@ -323,6 +397,141 @@ namespace ball.Menu
         {
             if (this.Show) spriteBatch.DrawString(this.FontBold, "Circle", this.Position, this.SpriteColor * this.Transparent);
         }
+    }
+
+
+    public class SelectLanguage : GameObject
+    {
+        public SpriteFont Font;
+        public Language English;
+        public Language Portugues;
+        public MainMenu MainMenu;
+        public Load Storage;
+
+        public override void Start()
+        {
+            List<string> _langStorage = this.Storage.getItemsString("Language");
+            string _lang = "";
+            if (_langStorage.Count > 0)
+                _lang = _langStorage[0];
+
+            this.English = new Language();
+            this.English.Font = this.Font;
+            this.English.Content = this.Content;
+            this.English.World = this.World;
+            this.English.Value = "ENGLISH";
+            this.English.Id = "English";
+            this.English.Position = new Vector2(this._Screem.getCenterScreem.X - 140, this._Screem.getCenterScreem.Y);
+            if (_lang == "English") this.English.Checked = true;
+            this.English._Mouse = this._Mouse;
+            this.English.Start();
+
+            this.Portugues = new Language();
+            this.Portugues.Font = this.Font;
+            this.Portugues.Content = this.Content;
+            this.Portugues.World = this.World;
+            this.Portugues.Value = "PORTUGUES";
+            this.Portugues.Id = "Portugues";
+            this.Portugues.Position = new Vector2(this._Screem.getCenterScreem.X + 140, this._Screem.getCenterScreem.Y);
+            if (_lang == "Portugues") this.Portugues.Checked = true;
+            this.Portugues._Mouse = this._Mouse;
+            this.Portugues.Start();
+
+            this.MainMenu.UI.Add(this.English);
+            this.MainMenu.UI.Add(this.Portugues);
+        }
+
+        public bool _isSaving = false;
+        public override void Update(GameTime gameTime)
+        {
+
+            if((this.English._click || this.Portugues._click) && !this._isSaving)
+            {
+                this._isSaving = true;
+                List<string> _lang = new List<string>();
+
+                if (this.English._click)
+                {
+                    this.English.Checked = true;
+                    this.Portugues.Checked = false;
+                    _lang.Add("English");
+                } else if(this.Portugues._click)
+                {
+                    this.English.Checked = false;
+                    this.Portugues.Checked = true;
+                    _lang.Add("Portugues");
+                }
+
+                this.Storage.AddItemString("Language", _lang);
+                this.Storage.Save();
+                this._isSaving = false;
+            }
+        }
+    }
+
+    public class Language : BoxSprite
+    {
+        public string Id;
+        public SpriteFont Font;
+        public string Value;
+        public MainMenu MainMenu;
+        public MenuItemBox MenuItemBox;
+        public bool Checked;
+
+        public void Start()
+        {
+            this.SpriteColor = Color.Black;
+            this.Origin = this.Font.MeasureString(this.Value) / 2f;
+            this.MenuItemBox = new MenuItemBox();
+            this.MenuItemBox.Position = new Vector2(this.Position.X - 80, this.Position.Y - 20);
+            this.MenuItemBox.ContentSize = new Vector2(140, 20);
+            this.MenuItemBox.Content = this.Content;
+            this.MenuItemBox.Start();
+            this._bodySize = new Vector2(120, 120);
+            this.SetBoxCollision(this.World);
+            this.CBody.SetTransform(new Vector2(this.Position.X - 10, this.Position.Y - 15), this.Rotation);
+            this.CBody.Tag = this.Id;
+        }
+
+        bool _MouseOver;
+        public override void OnMouseOver()
+        {
+            this._MouseOver = true;
+        }
+
+        public bool _click;
+        public override void Update(GameTime gameTime)
+        {
+            this.MenuItemBox.Transparent = this.Transparent;
+            if (this.Checked)
+            {
+                this.MenuItemBox.Sprite = this.MenuItemBox.SpriteOver;
+                this.SpriteColor = Color.White;
+            }
+            else
+            {
+                this.MenuItemBox.Sprite = this.MenuItemBox.SpriteBorder;
+                this.SpriteColor = Color.Black;
+            }
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && !_click && this._MouseOver)
+            {
+                this._click = true;
+            }
+            else if (Mouse.GetState().LeftButton == ButtonState.Released && _click)
+            {
+                this._click = false;
+            }
+
+            this._MouseOver = false;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            this.MenuItemBox.Draw(spriteBatch);
+            spriteBatch.DrawString(this.Font, this.Value, this.Position, this.SpriteColor * this.Transparent, this.Rotation, this.Origin, this.Scale, this.spriteEffect, 0f);
+        }
+
     }
 
     public class MenuItemLevel : BoxSprite
@@ -408,7 +617,8 @@ namespace ball.Menu
             "Mom    &    Dad",
             "Mayra Carvalho",
             "Pedro Souza",
-            "Josue Cortes",
+            "Josue Côrtes",
+            "Gustavo Albuquerque",
             "CREDITS_UI_THANKS",
         };
         public List<Vector2> CreditsPostion = new List<Vector2>();
@@ -429,7 +639,7 @@ namespace ball.Menu
                 Vector2 size = this.Font.MeasureString(Credit);
 
                 if(i == 1) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f),  280));
-                else if(i == 3  || i == 5 || i == 10) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 50 ) );
+                else if(i == 3  || i == 5 || i == 11) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 50 ) );
                 else CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 30));
                 i++;
             }
@@ -441,7 +651,7 @@ namespace ball.Menu
             this.CreditsString[0] = this.Localization.Get(lang, "CREDITS_UI_PRODUCTED_BY").ToUpper();
             this.CreditsString[2] = this.Localization.Get(lang, "CREDITS_UI_MUSIC").ToUpper();
             this.CreditsString[4] = this.Localization.Get(lang, "CREDITS_UI_SPECIAL_THANKS").ToUpper();
-            this.CreditsString[9] = this.Localization.Get(lang, "CREDITS_UI_THANKS").ToUpper();
+            this.CreditsString[10] = this.Localization.Get(lang, "CREDITS_UI_THANKS").ToUpper();
 
             this.SetSizes();
             this.Origin = new Vector2(this.TitleSize.X / 2f, this.TitleSize.Y / 2f);
@@ -465,6 +675,7 @@ namespace ball.Menu
                 spriteBatch.DrawString(this.Font, this.CreditsString[7], CreditsPostion[7], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[8], CreditsPostion[8], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[9], CreditsPostion[9], this.SpriteColor * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[10], CreditsPostion[10], this.SpriteColor * this.Transparent);
             }
         }
     }

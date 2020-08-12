@@ -10,12 +10,14 @@ using Microsoft.Xna.Framework.Input;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
+using ball.Managers;
 
 namespace ball.Gameplay
 {
     public class Hud : Scene
     {
         public MouseManager Mouse;
+        public GameManager GameManager;
 
         public Reload Reload;
         public Home Home;
@@ -43,6 +45,15 @@ namespace ball.Gameplay
                 this.UI.Add(this.Reload);
             }
 
+            if (this.HomeShow)
+            {
+                this.Home = new Home();
+                this.Home.GameManager = this.GameManager;
+                this.Home.Hud = this;
+                this.Home.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Home);
+            }
+
             if (this.ResizeShow && this.Resize == null)
             {
                 this.Resize = new Resize();
@@ -50,13 +61,7 @@ namespace ball.Gameplay
                 this.UI.Add(this.Resize);
             }
 
-            if (this.HomeShow)
-            {
-                this.Home = new Home();
-                this.Home.Start(Content, World, Mouse, ScreemController);
-                this.UI.Add(this.Home);
-            }
-
+            
             if (this.BackShow)
             {
                 if(this.Back == null) this.Back = new BackBTN();
@@ -71,10 +76,10 @@ namespace ball.Gameplay
         public void Destroy()
         {
             this.LevelReady = false;
-            if (this.Home.CBody != null) this.Home.CBody.World.Remove(this.Home.CBody);
             if (this.Resize.CBody != null) this.Resize.CBody.World.Remove(this.Resize.CBody);
+            if (this.Home.CBody != null) this.Home.CBody.World.Remove(this.Home.CBody);
             if (this.Reload.CBody != null) this.Reload.CBody.World.Remove(this.Reload.CBody);
-            if (this.Back.CBody != null) this.Back.CBody.World.Remove(this.Back.CBody);
+            if (this.BackShow && this.Back.CBody != null) this.Back.CBody.World.Remove(this.Back.CBody);
 
             this.Home = null;
             this.Resize = null;
@@ -208,7 +213,7 @@ namespace ball.Gameplay
             else this.Sprite = this.SpriteFull;
 
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton && !this.RemoveFromScene)
             {
                 _pressedLeftButton = true;
                 this._Screem.graphics.IsFullScreen = !this._Screem.graphics.IsFullScreen;
@@ -237,6 +242,8 @@ namespace ball.Gameplay
     #region Home
     public class Home : GameObject
     {
+        public GameManager GameManager;
+        public Hud Hud;
         public void Start(ContentManager Content, World World, MouseManager Mouse, ScreemController ScreemController)
         {
             this._Screem = ScreemController;
@@ -246,6 +253,7 @@ namespace ball.Gameplay
             this._Mouse = Mouse;
             this.SetBoxCollision(World);
             this.CBody.Tag = "Home";
+            this.CBody.BodyType = BodyType.Static;
         }
 
         bool _pressedLeftButton;
@@ -253,6 +261,7 @@ namespace ball.Gameplay
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
             {
+                GameManager.GoToMenu();
                 _pressedLeftButton = true;
             }
             else if (Mouse.GetState().LeftButton == ButtonState.Released) _pressedLeftButton = false;

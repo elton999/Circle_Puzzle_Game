@@ -147,6 +147,7 @@ namespace ball.Managers
             if (this.SceneUI == null) {
                 this.SceneUI = new Hud();
                 this.SceneUI.World = this.WorldUIMainMenu;
+                this.SceneUI.GameManager = this;
                 this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
             }
             this.SceneLevel = this.Levels[this.CurrentlyLevel];
@@ -158,6 +159,21 @@ namespace ball.Managers
             this.SceneUI.SetLevel(this.SceneLevel);
 
             this.SaveProgress(this.CurrentlyLevel);
+        }
+
+        public void GoToMenu()
+        {
+            this.CurrentlyStatus = GameStatus.MAIN_MENU;
+            this.Levels[this.CurrentlyLevel].Destroy();
+            this.SceneUI.LevelReady = false;
+            this.SceneUI = null;
+            this.SceneMainMenu.Start();
+        }
+
+        public void GoToCreditsArea()
+        {
+            this.GoToMenu();
+            this.SceneMainMenu.CreateCreditsArea();
         }
 
         public void SaveProgress(int _level)
@@ -191,6 +207,9 @@ namespace ball.Managers
                             this.Levels[this.CurrentlyLevel].Destroy();
                             this.CurrentlyLevel++;
                             this.StartLevel();
+                        } else if (this.SceneLevel.Finished && this.CurrentlyLevel == this.Levels.Count() - 1)
+                        {
+                            this.GoToCreditsArea();
                         }
                         break;
                     case GameStatus.MAIN_MENU:
