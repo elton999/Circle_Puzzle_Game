@@ -433,7 +433,7 @@ namespace ball.Menu
             this.Portugues.Font = this.Font;
             this.Portugues.Content = this.Content;
             this.Portugues.World = this.World;
-            this.Portugues.Value = "PORTUGUES";
+            this.Portugues.Value = "PORTUGUÊS";
             this.Portugues.Id = "Portugues";
             this.Portugues.Position = new Vector2(this._Screem.getCenterScreem.X + 140, this._Screem.getCenterScreem.Y);
             if (_lang == "Portugues") this.Portugues.Checked = true;

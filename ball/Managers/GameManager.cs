@@ -164,11 +164,15 @@ namespace ball.Managers
 
         public void GoToMenu()
         {
-            this.CurrentlyStatus = GameStatus.MAIN_MENU;
-            this.Levels[this.CurrentlyLevel].Destroy();
-            this.SceneUI.LevelReady = false;
+            this.SceneUI.Home.RemoveFromScene = true;
+            this.SceneUI.Home = null;
+            this.SceneUI.HomeShow = false;
+
             this.SceneUI = null;
             this.SceneMainMenu.Start();
+
+            this.Levels[this.CurrentlyLevel].Destroy();
+            this.CurrentlyStatus = GameStatus.MAIN_MENU;
         }
 
         public void GoToCreditsArea()
@@ -198,6 +202,7 @@ namespace ball.Managers
                         if (this.Levels[this.CurrentlyLevel].LevelReady == false) this.StartLevel();
                         this.SceneLevel.UpdateLevel(gameTime);
                         this.SceneUI.Update(gameTime);
+
                         //change Color Mouse
                         if (this.SceneLevel.WhiteUI) this.Mouse.Sprite = this.MouseWhite;
                         else this.Mouse.Sprite = this.MouseBlack;

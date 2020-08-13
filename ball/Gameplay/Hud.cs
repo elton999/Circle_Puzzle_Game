@@ -192,6 +192,7 @@ namespace ball.Gameplay
     {
         Texture2D SpriteFull;
         Texture2D SpriteWindowed;
+        public bool CanResize = true;
 
         public void Start(ContentManager Content, World World, MouseManager Mouse, ScreemController ScreemController)
         {
@@ -229,7 +230,8 @@ namespace ball.Gameplay
         bool _MouseOver;
         public override void OnMouseOver()
         {
-            this._MouseOver = true;
+            if (CanResize)
+                this._MouseOver = true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -261,6 +263,7 @@ namespace ball.Gameplay
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
             {
+                this.Hud.Resize._Mouse = null;
                 GameManager.GoToMenu();
                 _pressedLeftButton = true;
             }
