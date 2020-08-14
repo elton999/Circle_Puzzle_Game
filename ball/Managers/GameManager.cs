@@ -183,13 +183,16 @@ namespace ball.Managers
 
         public void GoToMenu()
         {
+            this.SceneMainMenu.Start();
+
             this.SceneUI.Home.RemoveFromScene = true;
+            this.SceneUI.Resize.RemoveFromScene = true;
+            this.SceneUI.Music.RemoveFromScene = true;
             this.SceneUI.Home = null;
             this.SceneUI.HomeShow = false;
 
             this.SceneUI = null;
-            this.SceneMainMenu.Start();
-
+            
             this.Levels[this.CurrentlyLevel].Destroy();
             this.CurrentlyStatus = GameStatus.MAIN_MENU;
         }
@@ -233,9 +236,8 @@ namespace ball.Managers
                             this.CurrentlyLevel++;
                             this.StartLevel();
                         } else if (this.SceneLevel.Finished && this.CurrentlyLevel == this.Levels.Count() - 1)
-                        {
                             this.GoToCreditsArea();
-                        }
+
                         break;
                     case GameStatus.MAIN_MENU:
                         this.Mouse.Sprite = this.MouseBlack;

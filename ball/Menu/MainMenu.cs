@@ -156,7 +156,6 @@ namespace ball.Menu
             this.Hud.Back = backHudBtn;
             this.Hud.Start(this.Content, this.Mouse, this.Screem);
             backHudBtn.CBody.Tag = "back";
-
             
             this.CreditsArea = new CreditsArea();
             this.CreditsArea.Localization = this.Localization;
@@ -166,7 +165,6 @@ namespace ball.Menu
             this.CreditsArea.FontBold = this.FontBold;
             this.CreditsArea.Show = true;
             this.CreditsArea.Start();
-
             
             this.UI.Add(this.CreditsArea);
         }
@@ -639,6 +637,7 @@ namespace ball.Menu
             "Josue Côrtes",
             "Gustavo Albuquerque",
             "CREDITS_UI_THANKS",
+            "www.eltonsilva.site     @EltonSilvaArt",
         };
         public List<Vector2> CreditsPostion = new List<Vector2>();
         public Vector2 TitleSize;
@@ -697,6 +696,7 @@ namespace ball.Menu
                 spriteBatch.DrawString(this.Font, this.CreditsString[10], CreditsPostion[10], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[11], CreditsPostion[11], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[12], CreditsPostion[12], this.SpriteColor * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[13], CreditsPostion[13], this.SpriteColor * this.Transparent);
             }
         }
     }

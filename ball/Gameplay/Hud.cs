@@ -47,19 +47,10 @@ namespace ball.Gameplay
                 this.Reload.Start(Content, World, Mouse, ScreemController);
                 this.UI.Add(this.Reload);
             }
-
-            if (this.HomeShow)
-            {
-                this.Home = new Home();
-                this.Home.GameManager = this.GameManager;
-                this.Home.Hud = this;
-                this.Home.Start(Content, World, Mouse, ScreemController);
-                this.UI.Add(this.Home);
-            }
-
+            
             if (this.MusicShow)
             {
-                this.Music = new Music();
+                if (this.Music == null) this.Music = new Music();
                 this.Music.GameManager = this.GameManager;
                 this.Music.Hud = this;
                 this.Music.Start(Content, World, Mouse, ScreemController);
@@ -80,7 +71,16 @@ namespace ball.Gameplay
                 this.Back.Start(Content, World, Mouse, ScreemController);
                 this.UI.Add(this.Back);
             }
-            
+
+            if (this.HomeShow)
+            {
+                this.Home = new Home();
+                this.Home.GameManager = this.GameManager;
+                this.Home.Hud = this;
+                this.Home.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Home);
+            }
+
             this.SetBackgroundColor = Color.Transparent;
             this.LevelReady = true;
         }
@@ -89,6 +89,7 @@ namespace ball.Gameplay
         {
             this.LevelReady = false;
             if (this.Resize.CBody != null) this.Resize.CBody.World.Remove(this.Resize.CBody);
+            if (this.Music.CBody != null) this.Music.CBody.World.Remove(this.Music.CBody);
             if (this.Home.CBody != null) this.Home.CBody.World.Remove(this.Home.CBody);
             if (this.Reload.CBody != null) this.Reload.CBody.World.Remove(this.Reload.CBody);
             if (this.BackShow && this.Back.CBody != null) this.Back.CBody.World.Remove(this.Back.CBody);
@@ -151,7 +152,6 @@ namespace ball.Gameplay
             this.DrawSprite(spriteBatch);
         }
     }
-
     #endregion
 
     #region Reload
@@ -214,6 +214,7 @@ namespace ball.Gameplay
             this._bodySize = new Vector2(this.SpriteFull.Height, this.SpriteFull.Width);
             this.TextureSize = this._bodySize;
             this._Mouse = Mouse;
+            this.Position = new Vector2(this._Screem.getCurrentResolutionSize.X - this.SpriteWindowed.Width, this.SpriteWindowed.Height);
             this.SetBoxCollision(World);
             this.CBody.Tag = "Resize";
             this.CBody.BodyType = BodyType.Static;
@@ -317,6 +318,7 @@ namespace ball.Gameplay
             this._bodySize = new Vector2(this.Sprite.Height, this.Sprite.Width);
             this.TextureSize = this._bodySize;
             this._Mouse = Mouse;
+            this.Position = new Vector2(this._Screem.getCenterScreem.X - 60f, this.Sprite.Height);
             this.SetBoxCollision(World);
             this.CBody.Tag = "Music";
             this.CBody.BodyType = BodyType.Static;
@@ -348,7 +350,6 @@ namespace ball.Gameplay
         bool _MouseOver;
         public override void OnMouseOver()
         {
-            Console.WriteLine("music");
             this._MouseOver = true;
         }
 
