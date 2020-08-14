@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using UmbrellaToolKit.Localization;
@@ -50,6 +52,9 @@ namespace ball.Managers
         public Texture2D MouseWhite;
         public Texture2D MouseBlack;
 
+        private SoundEffect MusicSoundTrack;
+        public SoundEffectInstance soundInstance;
+
         public SpriteFont FontBold;
         public SpriteFont FontRegular;
 
@@ -75,6 +80,11 @@ namespace ball.Managers
 
             this.World = new World();
             this.World.Gravity = new Vector2(0, 10);
+
+            this.MusicSoundTrack = Content.Load<SoundEffect>("Sound/kalimba-relaxation-music-by-kevin-macleod-from-filmmusic-io");
+            this.soundInstance = this.MusicSoundTrack.CreateInstance();
+            this.soundInstance.Volume = 0.1f;
+            this.soundInstance.IsLooped = true;
 
             this.Mouse = new MouseManager();
             this.MouseWhite = Content.Load<Texture2D>("Sprites/UI/upLeft_white");
@@ -145,12 +155,15 @@ namespace ball.Managers
 
         public void StartLevel()
         {
+            if(this.CurrentlyLevel > 0)
+                this.StartSound();
             if (this.SceneUI == null) {
                 this.SceneUI = new Hud();
                 this.SceneUI.World = this.WorldUIMainMenu;
                 this.SceneUI.GameManager = this;
                 this.SceneUI.Start(this.Content, this.Mouse, this.Screem);
             }
+            
             this.SceneLevel = this.Levels[this.CurrentlyLevel];
             this.SceneLevel.Screem = this.Screem;
             this.SceneLevel.Storage = this.Storage;
@@ -160,6 +173,12 @@ namespace ball.Managers
             this.SceneUI.SetLevel(this.SceneLevel);
 
             this.SaveProgress(this.CurrentlyLevel);
+        }
+
+        public void StartSound()
+        {
+            if (this.soundInstance.State == SoundState.Stopped)
+                this.soundInstance.Play();
         }
 
         public void GoToMenu()

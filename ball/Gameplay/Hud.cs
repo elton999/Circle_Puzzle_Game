@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using UmbrellaToolKit;
 using UmbrellaToolKit.UI;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -23,12 +24,14 @@ namespace ball.Gameplay
         public Home Home;
         public Resize Resize;
         public BackBTN Back;
+        public Music Music;
         public World World;
 
         public bool ReloadShow = true;
         public bool ResizeShow = true;
         public bool HomeShow = true;
         public bool BackShow = false;
+        public bool MusicShow = true;
 
         public Stage CurrentLevel;
 
@@ -52,6 +55,15 @@ namespace ball.Gameplay
                 this.Home.Hud = this;
                 this.Home.Start(Content, World, Mouse, ScreemController);
                 this.UI.Add(this.Home);
+            }
+
+            if (this.MusicShow)
+            {
+                this.Music = new Music();
+                this.Music.GameManager = this.GameManager;
+                this.Music.Hud = this;
+                this.Music.Start(Content, World, Mouse, ScreemController);
+                this.UI.Add(this.Music);
             }
 
             if (this.ResizeShow && this.Resize == null)
@@ -278,6 +290,65 @@ namespace ball.Gameplay
         bool _MouseOver;
         public override void OnMouseOver()
         {
+            this._MouseOver = true;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            this.DrawSprite(spriteBatch);
+        }
+    }
+    #endregion
+
+    #region Music
+    public class Music : GameObject
+    {
+        public GameManager GameManager;
+        public Hud Hud;
+        public Texture2D MusicOn;
+        public Texture2D MusicOff;
+
+        public void Start(ContentManager Content, World World, MouseManager Mouse, ScreemController ScreemController)
+        {
+            this._Screem = ScreemController;
+            this.MusicOn = Content.Load<Texture2D>("Sprites/UI/musicOn");
+            this.MusicOff = Content.Load<Texture2D>("Sprites/UI/musicOff");
+            this.Sprite = this.MusicOn;
+            this._bodySize = new Vector2(this.Sprite.Height, this.Sprite.Width);
+            this.TextureSize = this._bodySize;
+            this._Mouse = Mouse;
+            this.SetBoxCollision(World);
+            this.CBody.Tag = "Music";
+            this.CBody.BodyType = BodyType.Static;
+        }
+
+        bool _pressedLeftButton;
+        public override void Update(GameTime gameTime)
+        {
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && this._MouseOver && !_pressedLeftButton)
+            {
+                if (this.GameManager.soundInstance.State != SoundState.Playing)
+                    this.GameManager.StartSound();
+                else
+                    this.GameManager.soundInstance.Stop();
+
+                _pressedLeftButton = true;
+            }
+            else if (Mouse.GetState().LeftButton == ButtonState.Released) _pressedLeftButton = false;
+
+            if (this.GameManager.soundInstance.State == SoundState.Playing) this.Sprite = this.MusicOn;
+            else this.Sprite = this.MusicOff;
+
+            Vector2 _position = new Vector2(this._Screem.getCenterScreem.X - 60f, this.Sprite.Height);
+            this.CBody.SetTransform(ref _position, this.CBody.Rotation);
+
+            this._MouseOver = false;
+        }
+
+        bool _MouseOver;
+        public override void OnMouseOver()
+        {
+            Console.WriteLine("music");
             this._MouseOver = true;
         }
 

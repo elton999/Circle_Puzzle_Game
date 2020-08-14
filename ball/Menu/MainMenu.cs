@@ -43,8 +43,10 @@ namespace ball.Menu
         {
             this.Hud = new Hud();
             this.Hud.World = this.World;
+            this.Hud.GameManager = this.GameManager;
             this.Hud.ResizeShow = false;
             this.Restart();
+            this.GameManager.StartSound();
         }
 
         public override void Update(GameTime gameTime)
@@ -155,6 +157,7 @@ namespace ball.Menu
             this.Hud.Start(this.Content, this.Mouse, this.Screem);
             backHudBtn.CBody.Tag = "back";
 
+            
             this.CreditsArea = new CreditsArea();
             this.CreditsArea.Localization = this.Localization;
             this.CreditsArea.Storage = this.Storage;
@@ -163,6 +166,7 @@ namespace ball.Menu
             this.CreditsArea.FontBold = this.FontBold;
             this.CreditsArea.Show = true;
             this.CreditsArea.Start();
+
             
             this.UI.Add(this.CreditsArea);
         }
@@ -222,7 +226,8 @@ namespace ball.Menu
         public void DestroyMenu()
         {
             this.DestroyHud();
-            foreach (GameObject gameObject in this.UI)
+            this.TitleMainMenu.Show = false;
+            foreach (GameObject gameObject in this.MenuItems)
                 gameObject.RemoveFromScene = true;
 
             this.MenuItems.Clear();
@@ -621,8 +626,12 @@ namespace ball.Menu
         public string[] CreditsString = {
             "CREDITS_UI_PRODUCTED_BY",
             "Elton Silva",
+
             "CREDITS_UI_MUSIC",
-            "music credits",
+            "Kalimba Relaxation Music by Kevin MacLeod",
+            "Link: https://incompetech.filmmusic.io/song/5711-kalimba-relaxation-music",
+            "License: http://creativecommons.org/licenses/by/4.0/",
+
             "CREDITS_UI_SPECIAL_THANKS",
             "Mom    &    Dad",
             "Mayra Carvalho",
@@ -648,8 +657,8 @@ namespace ball.Menu
             {
                 Vector2 size = this.Font.MeasureString(Credit);
 
-                if(i == 1) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f),  280));
-                else if(i == 3  || i == 5 || i == 11) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 50 ) );
+                if(i == 1) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f),  220));
+                else if(i == 3  || i == 7 || i == 13) CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 50 ) );
                 else CreditsPostion.Add(new Vector2(this.Screem.getCenterScreem.X - (size.X / 2f), CreditsPostion[CreditsPostion.Count - 1].Y + 30));
                 i++;
             }
@@ -660,12 +669,12 @@ namespace ball.Menu
             string lang = this.Storage.getItemsString("Language")[0];
             this.CreditsString[0] = this.Localization.Get(lang, "CREDITS_UI_PRODUCTED_BY").ToUpper();
             this.CreditsString[2] = this.Localization.Get(lang, "CREDITS_UI_MUSIC").ToUpper();
-            this.CreditsString[4] = this.Localization.Get(lang, "CREDITS_UI_SPECIAL_THANKS").ToUpper();
-            this.CreditsString[10] = this.Localization.Get(lang, "CREDITS_UI_THANKS").ToUpper();
+            this.CreditsString[6] = this.Localization.Get(lang, "CREDITS_UI_SPECIAL_THANKS").ToUpper();
+            this.CreditsString[12] = this.Localization.Get(lang, "CREDITS_UI_THANKS").ToUpper();
 
             this.SetSizes();
             this.Origin = new Vector2(this.TitleSize.X / 2f, this.TitleSize.Y / 2f);
-            this.Position = new Vector2(this.Screem.getCenterScreem.X - this.Origin.X, 150f);
+            this.Position = new Vector2(this.Screem.getCenterScreem.X - this.Origin.X, 100f);
             this.SpriteColor = Color.Black;
         }
 
@@ -679,13 +688,15 @@ namespace ball.Menu
                 spriteBatch.DrawString(this.Font, this.CreditsString[1], CreditsPostion[1], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[2], CreditsPostion[2], Color.Gray * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[3], CreditsPostion[3], this.SpriteColor * this.Transparent);
-                spriteBatch.DrawString(this.Font, this.CreditsString[4], CreditsPostion[4], Color.Gray * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[4], CreditsPostion[4], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[5], CreditsPostion[5], this.SpriteColor * this.Transparent);
-                spriteBatch.DrawString(this.Font, this.CreditsString[6], CreditsPostion[6], this.SpriteColor * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[6], CreditsPostion[6], Color.Gray * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[7], CreditsPostion[7], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[8], CreditsPostion[8], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[9], CreditsPostion[9], this.SpriteColor * this.Transparent);
                 spriteBatch.DrawString(this.Font, this.CreditsString[10], CreditsPostion[10], this.SpriteColor * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[11], CreditsPostion[11], this.SpriteColor * this.Transparent);
+                spriteBatch.DrawString(this.Font, this.CreditsString[12], CreditsPostion[12], this.SpriteColor * this.Transparent);
             }
         }
     }
